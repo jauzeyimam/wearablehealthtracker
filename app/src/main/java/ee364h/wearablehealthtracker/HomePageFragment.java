@@ -1,15 +1,12 @@
 package ee364h.wearablehealthtracker;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.app.FragmentTransaction;
 import android.widget.ImageButton;
 
 
@@ -24,7 +21,8 @@ import android.widget.ImageButton;
  */
 public class HomePageFragment extends Fragment {
 
-    private OnGraphSelectedListener mListener;
+    private OnGraphSelectedListener graphListener;
+    private OnSettingsSelectedListener settingsListener;    //TODO: merge the two listeners, interfaces, methods into one that just decides how the activity responds to button presses in general
 
     /**
      * Use this factory method to create a new instance of
@@ -81,23 +79,31 @@ public class HomePageFragment extends Fragment {
                 launchGraph(GraphType.TEMPERATURE);
             }
         });
+        Button settings = (Button) getView().findViewById(R.id.settings);
+        settings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                launchSettings();
+            }
+        });
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnGraphSelectedListener) activity;
+            graphListener = (OnGraphSelectedListener) activity;
+            settingsListener = (OnSettingsSelectedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnGraphSelectedListener");
+                    + " must implement all Listeners");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        graphListener = null;
+        settingsListener = null;
     }
 
     /****LaunchGraph****
@@ -106,7 +112,14 @@ public class HomePageFragment extends Fragment {
      * @param graphType - type of graph to launch
      */
     public void launchGraph(GraphType graphType){
-        mListener.onGraphSelected(graphType);
+        graphListener.onGraphSelected(graphType);
+    }
+
+    /****LaunchSettings****
+     * Launches the Settings fragment
+     */
+    public void launchSettings(){
+        settingsListener.onSettingsSelected();
     }
 
 
@@ -117,6 +130,13 @@ public class HomePageFragment extends Fragment {
      */
     public interface OnGraphSelectedListener {
         public void onGraphSelected(GraphType graphType);
+    }
+
+    /****OnSettingsSelectedListener****
+     * Tells the activity to open the Settings Fragment
+     */
+    public interface OnSettingsSelectedListener {
+        public void onSettingsSelected();
     }
 
 }

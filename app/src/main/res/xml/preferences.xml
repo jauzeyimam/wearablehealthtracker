@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="pref_key_bluetooth"
+        android:summary="@string/pref_summary_bluetooth"
+        android:title="@string/pref_title_bluetooth"
+        android:defaultValue="true" />
+
+    <PreferenceCategory
+        android:title="@string/pref_title_modules"
+        android:key="pref_key_modules_settings"
+        android:summary="@string/pref_summary_module" >
+        <CheckBoxPreference
+            android:key="pref_key_module_pedometer"
+            android:summary="@string/pref_summary_module_pedometer"
+            android:title="@string/pref_title_module_pedometer"
+            android:defaultValue="true" />
+        <CheckBoxPreference
+            android:key="pref_key_module_bloodox"
+            android:summary="@string/pref_summary_module_bloodox"
+            android:title="@string/pref_title_module_bloodox"
+            android:defaultValue="true" />
+        <CheckBoxPreference
+            android:key="pref_key_module_pulse"
+            android:summary="@string/pref_summary_module_pulse"
+            android:title="@string/pref_title_module_pulse"
+            android:defaultValue="true" />
+        <CheckBoxPreference
+            android:key="pref_key_module_temperature"
+            android:summary="@string/pref_summary_module_temperature"
+            android:title="@string/pref_title_module_temperature"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_title_sampling_rates"
+        android:key="pref_key_sampling_rates_settings"
+        android:summary="@string/pref_summary_sampling_rates" >
+        <EditTextPreference
+            android:key="pref_key_sampling_rate_pedometer"
+            android:summary="@string/pref_summary_sampling_rate_pedometer"
+            android:title="@string/pref_title_sampling_rate_pedometer"
+            android:inputType="number"
+            android:defaultValue="500" />
+        <EditTextPreference
+            android:key="pref_key_sampling_rate_bloodox"
+            android:summary="@string/pref_summary_sampling_rate_bloodox"
+            android:title="@string/pref_title_sampling_rate_bloodox"
+            android:numeric="integer"
+            android:defaultValue="500" />
+        <ListPreference
+            android:key="pref_key_sampling_rate_pulse"
+            android:summary="@string/pref_summary_sampling_rate_pulse"
+            android:title="@string/pref_title_sampling_rate_pulse"
+            android:dialogTitle="@string/pref_dialogTitle_sampling_rate_pulse"
+            android:entries="@array/pref_entries_sampling_rate_pulse"
+            android:entryValues="@array/pref_entryValues_sampling_rate_pulse"
+            android:defaultValue="500" />
+        <!--TODO: Choose which method is the best and add Temperature-->
+    </PreferenceCategory>
+
+</PreferenceScreen>

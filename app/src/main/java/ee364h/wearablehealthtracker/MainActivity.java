@@ -10,7 +10,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.util.Log;
 
-public class MainActivity extends ActionBarActivity implements GraphFragment.OnFragmentInteractionListener, HomePageFragment.OnGraphSelectedListener {
+public class MainActivity extends ActionBarActivity
+        implements GraphFragment.OnFragmentInteractionListener,
+        HomePageFragment.OnGraphSelectedListener,
+        HomePageFragment.OnSettingsSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +32,7 @@ public class MainActivity extends ActionBarActivity implements GraphFragment.OnF
     }
 
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -49,7 +52,7 @@ public class MainActivity extends ActionBarActivity implements GraphFragment.OnF
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     public void onGraphSelected(GraphType graphType){
         // New GraphFragment of the correct type
@@ -65,6 +68,21 @@ public class MainActivity extends ActionBarActivity implements GraphFragment.OnF
 
         // Commit the transaction
         transaction.commit();
+    };
+
+    public void onSettingsSelected(){
+        Log.d("MainActivity","SETTINGS SELECTED");
+        // New SettingsFragment
+        SettingsFragment settingsFragment = new SettingsFragment();
+
+        //Replace HomePageFragment with GraphFragment
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, settingsFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
+        Log.d("MainActivity","SETTINGS FRAGMENT INITIATED");
     };
 
     @Override
