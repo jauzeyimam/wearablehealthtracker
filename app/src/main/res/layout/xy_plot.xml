@@ -2,7 +2,5 @@
 <com.androidplot.xy.XYPlotZoomPan xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:id="@+id/mainXYPlot"
-    androidPlot.title="Title of Graph"
-    androidPlot.graphWidget.gridLinePaint.color="#00AA00"
     >
 </com.androidplot.xy.XYPlotZoomPan>
