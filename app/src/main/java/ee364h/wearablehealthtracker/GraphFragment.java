@@ -1,6 +1,7 @@
 package ee364h.wearablehealthtracker;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -69,8 +70,16 @@ public class GraphFragment extends Fragment {
         // initialize our XYPlot reference:
         XYPlotZoomPan plot = (XYPlotZoomPan) getView().findViewById(R.id.mainXYPlot);
 
+        plot.setBackgroundColor(Color.WHITE);
+        plot.getGraphWidget().getBackgroundPaint().setColor(Color.WHITE);
+        plot.getGraphWidget().getGridBackgroundPaint().setColor(Color.WHITE);
+        plot.getGraphWidget().getRangeGridLinePaint().setColor(Color.TRANSPARENT);
+        plot.getGraphWidget().getDomainGridLinePaint().setColor(Color.TRANSPARENT);
+        
+
+
         // Create a couple arrays of y-values to plot:
-        Number[] series1Numbers = {1, 8, 5, 2, 7, 4};
+        Number[] series1Numbers = {2, 3, 4, 3, 2, 4};
         Number[] series2Numbers = {4, 6, 3, 8, 2, 10};
 
         // Turn the above arrays into XYSeries':
