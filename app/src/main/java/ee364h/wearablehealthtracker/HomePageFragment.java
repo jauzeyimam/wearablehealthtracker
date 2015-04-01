@@ -52,28 +52,28 @@ public class HomePageFragment extends Fragment {
         super.onStart();
 
         /******Buttons*******/
-        ImageButton pedometer = (ImageButton ) getView().findViewById(R.id.pedometer);
+        ImageButton pedometer = (ImageButton ) getView().findViewById(R.id.pedometer_image);
         pedometer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 launchGraph(GraphType.PEDOMETER);
             }
         });
 
-        ImageButton pulse = (ImageButton) getView().findViewById(R.id.pulse);
+        ImageButton pulse = (ImageButton) getView().findViewById(R.id.pulse_image);
         pulse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 launchGraph(GraphType.PULSE);
             }
         });
 
-        ImageButton bloodOx = (ImageButton) getView().findViewById(R.id.bloodOx);
+        ImageButton bloodOx = (ImageButton) getView().findViewById(R.id.bloodOx_image);
         bloodOx.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 launchGraph(GraphType.BLOODOX);
             }
         });
 
-        ImageButton temperature = (ImageButton) getView().findViewById(R.id.temperature);
+        ImageButton temperature = (ImageButton) getView().findViewById(R.id.temperature_image);
         temperature.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 launchGraph(GraphType.TEMPERATURE);
