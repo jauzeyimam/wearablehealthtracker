@@ -1,0 +1,431 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A5B9F2FC1A8926FF00F4C1DA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B9F2FB1A8926FF00F4C1DA /* main.m */; };
+		A5B9F2FF1A8926FF00F4C1DA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B9F2FE1A8926FF00F4C1DA /* AppDelegate.m */; };
+		A5B9F30D1A8926FF00F4C1DA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5B9F30C1A8926FF00F4C1DA /* Images.xcassets */; };
+		A5B9F3101A8926FF00F4C1DA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A5B9F30E1A8926FF00F4C1DA /* LaunchScreen.xib */; };
+		A5B9F31C1A8926FF00F4C1DA /* WearableHealthTrackerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B9F31B1A8926FF00F4C1DA /* WearableHealthTrackerTests.m */; };
+		A5B9F3281A892E6000F4C1DA /* JIHome.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B9F3261A892E6000F4C1DA /* JIHome.m */; };
+		A5B9F3291A892E6000F4C1DA /* JIHome.xib in Resources */ = {isa = PBXBuildFile; fileRef = A5B9F3271A892E6000F4C1DA /* JIHome.xib */; };
+		A5F5050D1AC92459002A4F74 /* GraphOne.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F5050B1AC92459002A4F74 /* GraphOne.m */; };
+		A5F5050E1AC92459002A4F74 /* GraphOne.xib in Resources */ = {isa = PBXBuildFile; fileRef = A5F5050C1AC92459002A4F74 /* GraphOne.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A5B9F3161A8926FF00F4C1DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A5B9F2EE1A8926FE00F4C1DA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A5B9F2F51A8926FF00F4C1DA;
+			remoteInfo = WearableHealthTracker;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A5B9F2F61A8926FF00F4C1DA /* WearableHealthTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WearableHealthTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5B9F2FA1A8926FF00F4C1DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A5B9F2FB1A8926FF00F4C1DA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A5B9F2FD1A8926FF00F4C1DA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		A5B9F2FE1A8926FF00F4C1DA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		A5B9F30C1A8926FF00F4C1DA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		A5B9F30F1A8926FF00F4C1DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		A5B9F3151A8926FF00F4C1DA /* WearableHealthTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WearableHealthTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5B9F31A1A8926FF00F4C1DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A5B9F31B1A8926FF00F4C1DA /* WearableHealthTrackerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WearableHealthTrackerTests.m; sourceTree = "<group>"; };
+		A5B9F3251A892E6000F4C1DA /* JIHome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JIHome.h; sourceTree = "<group>"; };
+		A5B9F3261A892E6000F4C1DA /* JIHome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JIHome.m; sourceTree = "<group>"; };
+		A5B9F3271A892E6000F4C1DA /* JIHome.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JIHome.xib; sourceTree = "<group>"; };
+		A5F5050A1AC92459002A4F74 /* GraphOne.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphOne.h; sourceTree = "<group>"; };
+		A5F5050B1AC92459002A4F74 /* GraphOne.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphOne.m; sourceTree = "<group>"; };
+		A5F5050C1AC92459002A4F74 /* GraphOne.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GraphOne.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A5B9F2F31A8926FF00F4C1DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A5B9F3121A8926FF00F4C1DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A5B9F2ED1A8926FE00F4C1DA = {
+			isa = PBXGroup;
+			children = (
+				A5B9F2F81A8926FF00F4C1DA /* WearableHealthTracker */,
+				A5B9F3181A8926FF00F4C1DA /* WearableHealthTrackerTests */,
+				A5B9F2F71A8926FF00F4C1DA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A5B9F2F71A8926FF00F4C1DA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A5B9F2F61A8926FF00F4C1DA /* WearableHealthTracker.app */,
+				A5B9F3151A8926FF00F4C1DA /* WearableHealthTrackerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A5B9F2F81A8926FF00F4C1DA /* WearableHealthTracker */ = {
+			isa = PBXGroup;
+			children = (
+				A5B9F3251A892E6000F4C1DA /* JIHome.h */,
+				A5B9F3261A892E6000F4C1DA /* JIHome.m */,
+				A5B9F3271A892E6000F4C1DA /* JIHome.xib */,
+				A5B9F2FD1A8926FF00F4C1DA /* AppDelegate.h */,
+				A5B9F2FE1A8926FF00F4C1DA /* AppDelegate.m */,
+				A5B9F30C1A8926FF00F4C1DA /* Images.xcassets */,
+				A5B9F30E1A8926FF00F4C1DA /* LaunchScreen.xib */,
+				A5B9F2F91A8926FF00F4C1DA /* Supporting Files */,
+				A5F5050A1AC92459002A4F74 /* GraphOne.h */,
+				A5F5050B1AC92459002A4F74 /* GraphOne.m */,
+				A5F5050C1AC92459002A4F74 /* GraphOne.xib */,
+			);
+			path = WearableHealthTracker;
+			sourceTree = "<group>";
+		};
+		A5B9F2F91A8926FF00F4C1DA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A5B9F2FA1A8926FF00F4C1DA /* Info.plist */,
+				A5B9F2FB1A8926FF00F4C1DA /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A5B9F3181A8926FF00F4C1DA /* WearableHealthTrackerTests */ = {
+			isa = PBXGroup;
+			children = (
+				A5B9F31B1A8926FF00F4C1DA /* WearableHealthTrackerTests.m */,
+				A5B9F3191A8926FF00F4C1DA /* Supporting Files */,
+			);
+			path = WearableHealthTrackerTests;
+			sourceTree = "<group>";
+		};
+		A5B9F3191A8926FF00F4C1DA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A5B9F31A1A8926FF00F4C1DA /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A5B9F2F51A8926FF00F4C1DA /* WearableHealthTracker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A5B9F31F1A8926FF00F4C1DA /* Build configuration list for PBXNativeTarget "WearableHealthTracker" */;
+			buildPhases = (
+				A5B9F2F21A8926FF00F4C1DA /* Sources */,
+				A5B9F2F31A8926FF00F4C1DA /* Frameworks */,
+				A5B9F2F41A8926FF00F4C1DA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WearableHealthTracker;
+			productName = WearableHealthTracker;
+			productReference = A5B9F2F61A8926FF00F4C1DA /* WearableHealthTracker.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A5B9F3141A8926FF00F4C1DA /* WearableHealthTrackerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A5B9F3221A8926FF00F4C1DA /* Build configuration list for PBXNativeTarget "WearableHealthTrackerTests" */;
+			buildPhases = (
+				A5B9F3111A8926FF00F4C1DA /* Sources */,
+				A5B9F3121A8926FF00F4C1DA /* Frameworks */,
+				A5B9F3131A8926FF00F4C1DA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A5B9F3171A8926FF00F4C1DA /* PBXTargetDependency */,
+			);
+			name = WearableHealthTrackerTests;
+			productName = WearableHealthTrackerTests;
+			productReference = A5B9F3151A8926FF00F4C1DA /* WearableHealthTrackerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A5B9F2EE1A8926FE00F4C1DA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = Jauzey;
+				TargetAttributes = {
+					A5B9F2F51A8926FF00F4C1DA = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					A5B9F3141A8926FF00F4C1DA = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = A5B9F2F51A8926FF00F4C1DA;
+					};
+				};
+			};
+			buildConfigurationList = A5B9F2F11A8926FE00F4C1DA /* Build configuration list for PBXProject "WearableHealthTracker" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A5B9F2ED1A8926FE00F4C1DA;
+			productRefGroup = A5B9F2F71A8926FF00F4C1DA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A5B9F2F51A8926FF00F4C1DA /* WearableHealthTracker */,
+				A5B9F3141A8926FF00F4C1DA /* WearableHealthTrackerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A5B9F2F41A8926FF00F4C1DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A5B9F3291A892E6000F4C1DA /* JIHome.xib in Resources */,
+				A5F5050E1AC92459002A4F74 /* GraphOne.xib in Resources */,
+				A5B9F3101A8926FF00F4C1DA /* LaunchScreen.xib in Resources */,
+				A5B9F30D1A8926FF00F4C1DA /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A5B9F3131A8926FF00F4C1DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A5B9F2F21A8926FF00F4C1DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A5B9F2FF1A8926FF00F4C1DA /* AppDelegate.m in Sources */,
+				A5F5050D1AC92459002A4F74 /* GraphOne.m in Sources */,
+				A5B9F3281A892E6000F4C1DA /* JIHome.m in Sources */,
+				A5B9F2FC1A8926FF00F4C1DA /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A5B9F3111A8926FF00F4C1DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A5B9F31C1A8926FF00F4C1DA /* WearableHealthTrackerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A5B9F3171A8926FF00F4C1DA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A5B9F2F51A8926FF00F4C1DA /* WearableHealthTracker */;
+			targetProxy = A5B9F3161A8926FF00F4C1DA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A5B9F30E1A8926FF00F4C1DA /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A5B9F30F1A8926FF00F4C1DA /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A5B9F31D1A8926FF00F4C1DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		A5B9F31E1A8926FF00F4C1DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A5B9F3201A8926FF00F4C1DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = WearableHealthTracker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		A5B9F3211A8926FF00F4C1DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = WearableHealthTracker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		A5B9F3231A8926FF00F4C1DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = WearableHealthTrackerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WearableHealthTracker.app/WearableHealthTracker";
+			};
+			name = Debug;
+		};
+		A5B9F3241A8926FF00F4C1DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = WearableHealthTrackerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WearableHealthTracker.app/WearableHealthTracker";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A5B9F2F11A8926FE00F4C1DA /* Build configuration list for PBXProject "WearableHealthTracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A5B9F31D1A8926FF00F4C1DA /* Debug */,
+				A5B9F31E1A8926FF00F4C1DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A5B9F31F1A8926FF00F4C1DA /* Build configuration list for PBXNativeTarget "WearableHealthTracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A5B9F3201A8926FF00F4C1DA /* Debug */,
+				A5B9F3211A8926FF00F4C1DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A5B9F3221A8926FF00F4C1DA /* Build configuration list for PBXNativeTarget "WearableHealthTrackerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A5B9F3231A8926FF00F4C1DA /* Debug */,
+				A5B9F3241A8926FF00F4C1DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A5B9F2EE1A8926FE00F4C1DA /* Project object */;
+}
