@@ -20,7 +20,7 @@ import android.widget.Toast;
 public class MainActivity extends ActionBarActivity
         implements GraphFragment.OnFragmentInteractionListener,
         HomePageFragment.OnGraphSelectedListener,
-        HomePageFragment.OnSettingsSelectedListener {
+        HomePageFragment.OnSettingsSelectedListener, HomePageFragment.OnBluetoothSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +91,22 @@ public class MainActivity extends ActionBarActivity
         transaction.commit();
         Log.d("MainActivity","SETTINGS FRAGMENT INITIATED");
     };
+
+    public void onBluetoothSelected(){
+        Log.d("MainActivity","SETTINGS SELECTED");
+        // New SettingsFragment
+        DeviceScanFragment bluetoothFragment = new DeviceScanFragment();
+
+        //Replace HomePageFragment with GraphFragment
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, bluetoothFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
+        Log.d("MainActivity","BLUETOOTH FRAGMENT INITIATED");
+    };
+
 
     @Override
     public void onBackPressed() {
