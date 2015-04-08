@@ -39,10 +39,10 @@ public class MainActivity extends ActionBarActivity
     }
 
 
-    /*@Override
+/*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -103,32 +103,4 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void onFragmentInteraction(Uri uri){};
-
-    /*Bluetooth Functions and Variables*/
-
-    /*Initialize Bluetooth Adapter*/
-    final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-    private BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
-    private BluetoothGatt mBluetoothGatt;
-
-    /*Temporary Bluetooth Function, find a better place for this....*/
-    public void tempBluetoothFunction(){ 
-
-        /*Check for BLE compatibility*/
-        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
-            finish();
-        }
-        else{
-            /*If bluetooth is not enabled, enable it*/
-            if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-            }
-
-            mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
-        }
-
-
-    }
 }

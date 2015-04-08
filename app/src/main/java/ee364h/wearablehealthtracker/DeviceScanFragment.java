@@ -13,6 +13,7 @@ import android.app.Fragment;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,32 +29,15 @@ import java.util.ArrayList;
  * Fragment for scanning and displaying available Bluetooth LE devices.
  */
 public class DeviceScanFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DeviceScanFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DeviceScanFragment newInstance(String param1, String param2) {
+    public static DeviceScanFragment newInstance() {
         DeviceScanFragment fragment = new DeviceScanFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+//        Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
+//        fragment.setArguments(args);
         return fragment;
     }
 
@@ -78,12 +62,12 @@ public class DeviceScanFragment extends Fragment {
         return textView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+/*    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
-    }
+    }*/
 
     @Override
     public void onAttach(Activity activity) {
@@ -133,6 +117,7 @@ public class DeviceScanFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // getActionBar().setTitle(R.string.title_devices);
+        setHasOptionsMenu(true);    //makes an options menu available for this fragment
         mHandler = new Handler();
 
         // Use this check to determine whether BLE is supported on the device.  Then you can
@@ -160,9 +145,11 @@ public class DeviceScanFragment extends Fragment {
     // These are stop and scan buttons to use when scanning for bluetooth devices
     // we don't have an action bar so we can scrap them or implement a layout for this
     // fragment that has a button in the middle
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);    //BAD BAD BAD not using inflater parameter, but it's necessary to override Fragment's inflater
+        //inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu,getActivity().getMenuInflater());
         if (!mScanning) {
             menu.findItem(R.id.menu_stop).setVisible(false);
             menu.findItem(R.id.menu_scan).setVisible(true);
@@ -173,8 +160,8 @@ public class DeviceScanFragment extends Fragment {
             menu.findItem(R.id.menu_refresh).setActionView(
                     R.layout.actionbar_indeterminate_progress);
         }
-        return true;
-    }*/
+//        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -205,7 +192,8 @@ public class DeviceScanFragment extends Fragment {
 
         // Initializes list view adapter.
         mLeDeviceListAdapter = new LeDeviceListAdapter();
-        setListAdapter(mLeDeviceListAdapter);
+        ListView listView = (ListView) getView().findViewById(R.id.gatt_services_list);
+        listView.setAdapter(mLeDeviceListAdapter);
         scanLeDevice(true);
     }
 
@@ -213,7 +201,7 @@ public class DeviceScanFragment extends Fragment {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // User chose not to enable Bluetooth.
         if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
-            finish();
+            getActivity().finish();
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -230,9 +218,9 @@ public class DeviceScanFragment extends Fragment {
     protected void onListItemClick(ListView l, View v, int position, long id) {
         final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
         if (device == null) return;
-        final Intent intent = new Intent(this, DeviceControlActivity.class);
-        intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
-        intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
+        final Intent intent = new Intent(this, DeviceControlFragment.class);
+        intent.putExtra(DeviceControlFragment.EXTRAS_DEVICE_NAME, device.getName());
+        intent.putExtra(DeviceControlFragment.EXTRAS_DEVICE_ADDRESS, device.getAddress());
         if (mScanning) {
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
             mScanning = false;
@@ -248,7 +236,7 @@ public class DeviceScanFragment extends Fragment {
                 public void run() {
                     mScanning = false;
                     mBluetoothAdapter.stopLeScan(mLeScanCallback);
-                    invalidateOptionsMenu();
+                    getActivity().invalidateOptionsMenu();
                 }
             }, SCAN_PERIOD);
 
@@ -258,7 +246,7 @@ public class DeviceScanFragment extends Fragment {
             mScanning = false;
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
         }
-        invalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     // Adapter for holding devices found through scanning.
@@ -269,7 +257,7 @@ public class DeviceScanFragment extends Fragment {
         public LeDeviceListAdapter() {
             super();
             mLeDevices = new ArrayList<BluetoothDevice>();
-            mInflator = DeviceScanActivity.this.getLayoutInflater();
+            mInflator = getActivity().getLayoutInflater();
         }
 
         public void addDevice(BluetoothDevice device) {
@@ -306,7 +294,7 @@ public class DeviceScanFragment extends Fragment {
             ViewHolder viewHolder;
             // General ListView optimization code.
             if (view == null) {
-                view = mInflator.inflate(R.layout.listitem_device, null);
+                view = mInflator.inflate(R.layout.listitem_ble_device, null);
                 viewHolder = new ViewHolder();
                 viewHolder.deviceAddress = (TextView) view.findViewById(R.id.device_address);
                 viewHolder.deviceName = (TextView) view.findViewById(R.id.device_name);
@@ -333,7 +321,7 @@ public class DeviceScanFragment extends Fragment {
 
                 @Override
                 public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-                    runOnUiThread(new Runnable() {
+                    getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             mLeDeviceListAdapter.addDevice(device);
