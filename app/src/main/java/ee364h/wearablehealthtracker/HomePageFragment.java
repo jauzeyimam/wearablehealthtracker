@@ -23,6 +23,7 @@ public class HomePageFragment extends Fragment {
 
     private OnGraphSelectedListener graphListener;
     private OnSettingsSelectedListener settingsListener;    //TODO: merge the two listeners, interfaces, methods into one that just decides how the activity responds to button presses in general
+    private OnBluetoothSelectedListener bluetoothListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -79,10 +80,18 @@ public class HomePageFragment extends Fragment {
                 launchGraph(GraphType.TEMPERATURE);
             }
         });
-        Button settings = (Button) getView().findViewById(R.id.settings);
+
+        ImageButton settings = (ImageButton) getView().findViewById(R.id.settings_image);
         settings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 launchSettings();
+            }
+        });
+
+        ImageButton bluetooth = (ImageButton) getView().findViewById(R.id.bluetooth_image);
+        bluetooth.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                launchBluetooth();
             }
         });
     }
@@ -93,6 +102,7 @@ public class HomePageFragment extends Fragment {
         try {
             graphListener = (OnGraphSelectedListener) activity;
             settingsListener = (OnSettingsSelectedListener) activity;
+            bluetoothListener = (OnBluetoothSelectedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement all Listeners");
@@ -104,6 +114,7 @@ public class HomePageFragment extends Fragment {
         super.onDetach();
         graphListener = null;
         settingsListener = null;
+        bluetoothListener = null;
     }
 
     /****LaunchGraph****
@@ -122,6 +133,14 @@ public class HomePageFragment extends Fragment {
         settingsListener.onSettingsSelected();
     }
 
+    /****LaunchBluetooth****
+     * Launches the Bluetooth fragment
+     */
+    public void launchBluetooth(){
+        bluetoothListener.onBluetoothSelected();
+    }
+
+
 
     /****OnGraphSelectedListener****
      * Tells the activity to open a graphFragment and
@@ -137,6 +156,13 @@ public class HomePageFragment extends Fragment {
      */
     public interface OnSettingsSelectedListener {
         public void onSettingsSelected();
+    }
+
+    /****OnBluetoothSelectedListener****
+     * Tells the activity to open the Bluetooth Fragment
+     */
+    public interface OnBluetoothSelectedListener {
+        public void onBluetoothSelected();
     }
 
 }
