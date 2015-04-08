@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,9 +29,9 @@ import java.util.ArrayList;
 /**
  * Fragment for scanning and displaying available Bluetooth LE devices.
  */
-public class DeviceScanFragment extends Fragment {
+public class DeviceScanFragment extends Fragment{
 
-    private OnFragmentInteractionListener mListener;
+    private OnBLEDeviceSelectedListener bleDeviceSelectedListener;
 
     public static DeviceScanFragment newInstance() {
         DeviceScanFragment fragment = new DeviceScanFragment();
@@ -73,7 +74,7 @@ public class DeviceScanFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            bleDeviceSelectedListener = (OnBLEDeviceSelectedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -83,7 +84,7 @@ public class DeviceScanFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        bleDeviceSelectedListener = null;
     }
 
     /**
@@ -96,9 +97,9 @@ public class DeviceScanFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnBLEDeviceSelectedListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onBLEDeviceSelected(String name, String address);
     }
 
 
@@ -194,6 +195,18 @@ public class DeviceScanFragment extends Fragment {
         mLeDeviceListAdapter = new LeDeviceListAdapter();
         ListView listView = (ListView) getView().findViewById(R.id.gatt_services_list);
         listView.setAdapter(mLeDeviceListAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            public void onItemClick(AdapterView<?> parent, View view, int position,long id){
+                final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
+                if (device == null) return;
+
+                if (mScanning) {
+                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                    mScanning = false;
+                }
+                bleDeviceSelectedListener.onBLEDeviceSelected(device.getName(), device.getAddress());
+            }
+        });
         scanLeDevice(true);
     }
 
@@ -214,19 +227,19 @@ public class DeviceScanFragment extends Fragment {
         mLeDeviceListAdapter.clear();
     }
 
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+/*    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
         final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
         if (device == null) return;
-        final Intent intent = new Intent(this, DeviceControlFragment.class);
-        intent.putExtra(DeviceControlFragment.EXTRAS_DEVICE_NAME, device.getName());
-        intent.putExtra(DeviceControlFragment.EXTRAS_DEVICE_ADDRESS, device.getAddress());
+//        final Intent intent = new Intent(this, DeviceControlFragment.class);
+//        intent.putExtra(DeviceControlFragment.EXTRAS_DEVICE_NAME, device.getName());
+//        intent.putExtra(DeviceControlFragment.EXTRAS_DEVICE_ADDRESS, device.getAddress());
         if (mScanning) {
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
             mScanning = false;
         }
-        startActivity(intent);
-    }
+        bleDeviceSelectedListener.onBLEDeviceSelected(device.getName(),device.getAddress());
+    }*/
 
     private void scanLeDevice(final boolean enable) {
         if (enable) {

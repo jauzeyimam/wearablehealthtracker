@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
@@ -15,12 +16,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.util.Log;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity
         implements GraphFragment.OnFragmentInteractionListener,
         HomePageFragment.OnGraphSelectedListener,
-        HomePageFragment.OnSettingsSelectedListener, HomePageFragment.OnBluetoothSelectedListener {
+        HomePageFragment.OnSettingsSelectedListener, HomePageFragment.OnBluetoothSelectedListener, DeviceScanFragment.OnBLEDeviceSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +110,24 @@ public class MainActivity extends ActionBarActivity
         Log.d("MainActivity","BLUETOOTH FRAGMENT INITIATED");
     };
 
+    public void onBLEDeviceSelected(String name, String address){
+        Log.d("MainActivity","SETTINGS SELECTED");
+        // New SettingsFragment
+        DeviceControlFragment deviceControlFragment = new DeviceControlFragment();
+        Bundle args = new Bundle();
+        args.putString(DeviceControlFragment.EXTRAS_DEVICE_NAME, name);
+        args.putString(DeviceControlFragment.EXTRAS_DEVICE_ADDRESS, address);
+        deviceControlFragment.setArguments(args);
+
+        //Replace HomePageFragment with GraphFragment
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, deviceControlFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
+        Log.d("MainActivity","BLUETOOTH FRAGMENT INITIATED");
+    };
 
     @Override
     public void onBackPressed() {
