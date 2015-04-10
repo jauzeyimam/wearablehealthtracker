@@ -40,7 +40,7 @@ public class DeviceControlFragment extends Fragment {
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
-    private OnFragmentInteractionListener mListener;
+//    private OnFragmentInteractionListener mListener;
 
     private final static String TAG = DeviceControlFragment.class.getSimpleName();
 
@@ -97,27 +97,27 @@ public class DeviceControlFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+//    public void onButtonPressed(Uri uri) {
+//        if (mListener != null) {
+//            mListener.onFragmentInteraction(uri);
+//        }
+//    }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+//        try {
+//            mListener = (OnFragmentInteractionListener) activity;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(activity.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+//        mListener = null;
     }
 
     /**
@@ -130,10 +130,10 @@ public class DeviceControlFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
+//    public interface OnFragmentInteractionListener {
+//        // TODO: Update argument type and name
+//        public void onFragmentInteraction(Uri uri);
+//    }
 
     /******** Device Control Activity **************/
 
@@ -237,7 +237,7 @@ public class DeviceControlFragment extends Fragment {
 
         // Sets up UI references.
         ((TextView) getView().findViewById(R.id.device_address)).setText(mDeviceAddress);
-        mGattServicesList = (ExpandableListView) getView().findViewById(R.id.gatt_services_list);
+        mGattServicesList = (ExpandableListView) getView().findViewById(R.id.gatt_services_list_expandable);
         mGattServicesList.setOnChildClickListener(servicesListClickListner);
         mConnectionState = (TextView) getView().findViewById(R.id.connection_state);
         mDataField = (TextView) getView().findViewById(R.id.data_value);

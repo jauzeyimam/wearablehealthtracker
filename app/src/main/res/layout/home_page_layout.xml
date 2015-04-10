@@ -229,7 +229,6 @@
             <ImageButton
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="Settings"
                 android:id="@+id/settings_image"
                 android:background="#ffffffff"
                 android:singleLine="false"
@@ -253,18 +252,15 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:id="@+id/bluetooth_image"
-                android:src="@drawable/bluetooth"
+                android:background="#ffffffff"
+                android:singleLine="false"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/gear"
                 android:adjustViewBounds="true"
-                android:baselineAlignBottom="false"
-                android:maxWidth="50sp"
-                android:layout_column="1"
+                android:layout_centerInParent="true"
                 android:scaleType="centerInside"
                 android:maxHeight="50sp"
-                android:layout_gravity="center"
-                android:longClickable="false"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:background="#ffffff" />
+                android:maxWidth="50sp" />
         </RelativeLayout>
 
     </TableRow>
