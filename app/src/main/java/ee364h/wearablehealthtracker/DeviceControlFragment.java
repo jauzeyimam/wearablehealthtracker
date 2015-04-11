@@ -91,9 +91,7 @@ public class DeviceControlFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);
-        return textView;
+        return inflater.inflate(R.layout.gatt_services_characteristics, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -102,6 +100,33 @@ public class DeviceControlFragment extends Fragment {
 //            mListener.onFragmentInteraction(uri);
 //        }
 //    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+//        getActivity().setContentView(R.layout.gatt_services_characteristics);
+
+//        final Intent intent = getIntent();
+        Log.d("DeviceControlFragment", getArguments().toString());
+//        View debug = getView();
+        if (getArguments() != null) {
+            mDeviceName = getArguments().getString(EXTRAS_DEVICE_NAME);
+            mDeviceAddress = getArguments().getString(EXTRAS_DEVICE_ADDRESS);
+        }
+
+        // Sets up UI references.
+        ((TextView) getView().findViewById(R.id.device_address)).setText(mDeviceAddress);
+        mGattServicesList = (ExpandableListView) getView().findViewById(R.id.gatt_services_list_expandable);
+        mGattServicesList.setOnChildClickListener(servicesListClickListner);
+        mConnectionState = (TextView) getView().findViewById(R.id.connection_state);
+        mDataField = (TextView) getView().findViewById(R.id.data_value);
+
+//        getActivity().getActionBar().setTitle(mDeviceName);
+//        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+        Intent gattServiceIntent = new Intent(getActivity(), BluetoothLEService.class);
+        getActivity().bindService(gattServiceIntent, mServiceConnection, getActivity().BIND_AUTO_CREATE);
+
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -227,25 +252,6 @@ public class DeviceControlFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().setContentView(R.layout.gatt_services_characteristics);
-
-//        final Intent intent = getIntent();
-        if (getArguments() != null) {
-            mDeviceName = getArguments().getString(EXTRAS_DEVICE_NAME);
-            mDeviceAddress = getArguments().getString(EXTRAS_DEVICE_ADDRESS);
-        }
-
-        // Sets up UI references.
-        ((TextView) getView().findViewById(R.id.device_address)).setText(mDeviceAddress);
-        mGattServicesList = (ExpandableListView) getView().findViewById(R.id.gatt_services_list_expandable);
-        mGattServicesList.setOnChildClickListener(servicesListClickListner);
-        mConnectionState = (TextView) getView().findViewById(R.id.connection_state);
-        mDataField = (TextView) getView().findViewById(R.id.data_value);
-
-        getActivity().getActionBar().setTitle(mDeviceName);
-        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-        Intent gattServiceIntent = new Intent(getActivity(), BluetoothLEService.class);
-        getActivity().bindService(gattServiceIntent, mServiceConnection, getActivity().BIND_AUTO_CREATE);
     }
 
     @Override

@@ -65,10 +65,10 @@
                   android:text="@string/no_data"
                   android:textSize="18sp"/>
     </LinearLayout>
-    <ListView android:id="@+id/gatt_services_list"
+    <ExpandableListView android:id="@+id/gatt_services_list_expandable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-    <ExpandableListView android:id="@+id/gatt_services_list_expandable"
+    <ListView android:id="@+id/gatt_services_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>
