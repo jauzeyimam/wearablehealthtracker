@@ -255,7 +255,7 @@
                 android:background="#ffffffff"
                 android:singleLine="false"
                 android:layout_alignParentStart="true"
-                android:src="@drawable/gear"
+                android:src="@drawable/bluetooth"
                 android:adjustViewBounds="true"
                 android:layout_centerInParent="true"
                 android:scaleType="centerInside"
