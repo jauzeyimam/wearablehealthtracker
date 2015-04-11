@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
@@ -108,17 +109,13 @@ public class DeviceControlFragment extends Fragment {
         mConnectionState = (TextView) getView().findViewById(R.id.connection_state);
         mDataField = (TextView) getView().findViewById(R.id.data_value);
 
-        // Hide the unnecessary view components
-        TextView textView = (TextView) getView().findViewById(R.id.device_address_prompt);
-        textView.setVisibility(View.VISIBLE);
-        textView = (TextView) getView().findViewById(R.id.connection_state_prompt);
-        textView.setVisibility(View.VISIBLE);
-        textView = (TextView) getView().findViewById(R.id.connection_state);
-        textView.setVisibility(View.VISIBLE);
-        textView = (TextView) getView().findViewById(R.id.data_value_prompt);
-        textView.setVisibility(View.VISIBLE);
-        textView = (TextView) getView().findViewById(R.id.data_value);
-        textView.setVisibility(View.VISIBLE);
+        // Bring back the necessary view components
+        LinearLayout linearLayout = (LinearLayout) getView().findViewById(R.id.device_address_linear_layout);
+        linearLayout.setVisibility(View.VISIBLE);
+        linearLayout = (LinearLayout) getView().findViewById(R.id.connection_state_linear_layout);
+        linearLayout.setVisibility(View.VISIBLE);
+        linearLayout = (LinearLayout) getView().findViewById(R.id.data_value_linear_layout);
+        linearLayout.setVisibility(View.VISIBLE);;
 
 //        getActivity().getActionBar().setTitle(mDeviceName);
 //        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);

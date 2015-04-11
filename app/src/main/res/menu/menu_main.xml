@@ -2,18 +2,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="ee364h.wearablehealthtracker.MainActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    <!--<item android:id="@+id/action_settings" android:title="@string/action_settings"-->
+        <!--android:orderInCategory="100" app:showAsAction="never" />-->
     <item android:id="@+id/menu_refresh"
+        android:title="Refresh"
         android:checkable="false"
         android:orderInCategory="1"
-        app:showAsAction="ifRoom"/>
+        android:showAsAction="always"/>
     <item android:id="@+id/menu_scan"
         android:title="@string/menu_scan"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom|withText"/>
+        android:showAsAction="always|withText"/>
     <item android:id="@+id/menu_stop"
         android:title="@string/menu_stop"
         android:orderInCategory="101"
-        app:showAsAction="ifRoom|withText"/>
+        android:showAsAction="always|withText"/>
 </menu>

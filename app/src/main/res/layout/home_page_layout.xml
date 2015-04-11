@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:scrollbars="none"
     android:layout_weight="1">
 
@@ -42,13 +42,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/pulse_image"
-                android:maxHeight="125sp"
-                android:maxWidth="125sp"
+                android:maxHeight="150sp"
+                android:maxWidth="150sp"
                 android:src="@drawable/pulse"
                 android:scaleType="centerInside"
                 android:layout_centerInParent="true"
                 android:adjustViewBounds="true"
-                android:background="#ffffffff" />
+                android:background="#ffffffff"
+                android:paddingBottom="5sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -65,15 +66,16 @@
 
             <ProgressBar
                 style="@android:style/Widget.ProgressBar.Horizontal"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/pulse_progress"
                 android:layout_gravity="center_horizontal|bottom"
-                android:progress="50"
-                android:layout_centerVertical="true"
-                android:layout_below="@+id/pulse_value"
+                android:progress="36"
                 android:paddingStart="5sp"
-                android:paddingEnd="5sp" />
+                android:paddingEnd="5sp"
+                android:layout_alignEnd="@+id/pulse_image"
+                android:layout_below="@+id/pulse_value"
+                android:layout_alignStart="@+id/pulse_image" />
 
         </RelativeLayout>
 
@@ -86,14 +88,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/temperature_image"
-                android:maxHeight="125sp"
-                android:maxWidth="125sp"
+                android:maxHeight="150sp"
+                android:maxWidth="150sp"
                 android:src="@drawable/temp"
                 android:scaleType="centerInside"
                 android:layout_centerInParent="true"
                 android:adjustViewBounds="true"
                 android:background="#ffffffff"
-                android:layout_marginLeft="5sp" />
+                android:layout_marginLeft="5sp"
+                android:paddingBottom="5sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -114,11 +117,13 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/temperature_progress"
                 android:layout_gravity="center_horizontal|bottom"
-                android:progress="50"
-                android:layout_centerVertical="true"
-                android:layout_below="@+id/temperature_value"
+                android:progress="95"
                 android:paddingEnd="5sp"
-                android:paddingStart="5sp" />
+                android:paddingStart="5sp"
+                android:maxWidth="225sp"
+                android:layout_alignEnd="@+id/temperature_image"
+                android:layout_below="@+id/temperature_image"
+                android:layout_alignStart="@+id/temperature_image" />
         </RelativeLayout>
     </TableRow>
 
@@ -129,19 +134,21 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginBottom="5sp">
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/bloodOx_image"
-                android:maxHeight="125sp"
-                android:maxWidth="125sp"
+                android:maxHeight="150sp"
+                android:maxWidth="150sp"
                 android:src="@drawable/o2"
                 android:scaleType="centerInside"
                 android:layout_centerInParent="true"
                 android:adjustViewBounds="true"
-                android:background="#ffffffff" />
+                android:background="#ffffffff"
+                android:paddingBottom="5sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -162,30 +169,33 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/bloodOx_progress"
                 android:layout_gravity="center_horizontal|bottom"
-                android:progress="50"
-                android:layout_centerVertical="true"
-                android:layout_below="@+id/bloodOx_value"
+                android:progress="75"
                 android:paddingEnd="5sp"
-                android:paddingStart="5sp" />
+                android:paddingStart="5sp"
+                android:layout_alignEnd="@+id/bloodOx_image"
+                android:layout_below="@+id/bloodOx_image"
+                android:layout_alignStart="@+id/bloodOx_image" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginBottom="5sp">
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/pedometer_image"
-                android:maxHeight="125sp"
-                android:maxWidth="125sp"
+                android:maxHeight="150sp"
+                android:maxWidth="150sp"
                 android:src="@drawable/pedometer"
                 android:scaleType="centerInside"
                 android:layout_centerInParent="true"
                 android:adjustViewBounds="true"
                 android:background="#ffffffff"
-                android:layout_marginLeft="5sp" />
+                android:layout_marginLeft="5sp"
+                android:paddingBottom="5sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -206,17 +216,18 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/pedometer_progress"
                 android:layout_gravity="center_horizontal|bottom"
-                android:progress="50"
-                android:layout_centerVertical="true"
-                android:layout_below="@+id/pedometer_value"
+                android:progress="25"
                 android:paddingEnd="5sp"
-                android:paddingStart="5sp" />
+                android:paddingStart="5sp"
+                android:layout_alignStart="@+id/pedometer_image"
+                android:layout_below="@+id/pedometer_value"
+                android:layout_alignEnd="@+id/pedometer_image" />
         </RelativeLayout>
     </TableRow>
 
     <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1">
 
@@ -235,7 +246,6 @@
                 android:layout_alignParentStart="true"
                 android:src="@drawable/gear"
                 android:adjustViewBounds="true"
-                android:layout_centerInParent="true"
                 android:scaleType="centerInside"
                 android:maxHeight="50sp"
                 android:maxWidth="50sp" />
@@ -264,6 +274,10 @@
         </RelativeLayout>
 
     </TableRow>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="100sp" />
 
 </TableLayout>
     </ScrollView>

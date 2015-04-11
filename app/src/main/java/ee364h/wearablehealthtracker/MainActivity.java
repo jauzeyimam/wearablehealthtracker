@@ -1,5 +1,6 @@
 package ee364h.wearablehealthtracker;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -17,10 +18,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends Activity
         implements GraphFragment.OnFragmentInteractionListener,
         HomePageFragment.OnGraphSelectedListener,
         HomePageFragment.OnSettingsSelectedListener, HomePageFragment.OnBluetoothSelectedListener, DeviceScanFragment.OnBLEDeviceSelectedListener {
@@ -28,7 +31,10 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("MainActivity", "onCreate Started");
-        super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        getActionBar().hide();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
 
@@ -39,13 +45,15 @@ public class MainActivity extends ActionBarActivity
                     .commit();
         }
         Log.d("MainActivity","onCreate Finished");
+
+        super.onCreate(savedInstanceState);
     }
 
 
-/*    @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -54,15 +62,15 @@ public class MainActivity extends ActionBarActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+//        int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 
     public void onGraphSelected(GraphType graphType){
         // New GraphFragment of the correct type

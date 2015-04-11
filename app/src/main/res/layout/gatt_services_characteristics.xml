@@ -18,7 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp">
-    <LinearLayout android:orientation="horizontal"
+    <LinearLayout android:id="@+id/device_address_linear_layout"
+                  android:orientation="horizontal"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:layout_margin="10dp">
@@ -34,7 +35,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"/>
     </LinearLayout>
-    <LinearLayout android:orientation="horizontal"
+    <LinearLayout android:id="@+id/connection_state_linear_layout"
+                  android:orientation="horizontal"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:layout_margin="10dp">
@@ -51,7 +53,8 @@
                   android:text="@string/disconnected"
                   android:textSize="18sp"/>
     </LinearLayout>
-    <LinearLayout android:orientation="horizontal"
+    <LinearLayout android:id="@+id/data_value_linear_layout"
+                  android:orientation="horizontal"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:layout_margin="10dp">

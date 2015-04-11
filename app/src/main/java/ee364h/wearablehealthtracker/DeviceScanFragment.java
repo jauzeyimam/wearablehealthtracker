@@ -20,8 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,7 +67,6 @@ public class DeviceScanFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // getActionBar().setTitle(R.string.title_devices);
-        setHasOptionsMenu(true);    //makes an options menu available for this fragment
         mHandler = new Handler();
 
         // Use this check to determine whether BLE is supported on the device.  Then you can
@@ -92,6 +90,8 @@ public class DeviceScanFragment extends Fragment{
                 return;
             }
         }
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -104,6 +104,8 @@ public class DeviceScanFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
+//        getActivity().setContentView(R.layout.activity_main);
+//        getActivity().getActionBar().show();
 
         // Ensures Bluetooth is enabled on the device.  If Bluetooth is not currently enabled,
         // fire an intent to display a dialog asking the user to grant permission to enable it.
@@ -114,16 +116,12 @@ public class DeviceScanFragment extends Fragment{
             }
         }
         // Hide the unnecessary view components
-        TextView textView = (TextView) getView().findViewById(R.id.device_address_prompt);
-        textView.setVisibility(View.GONE);
-        textView = (TextView) getView().findViewById(R.id.connection_state_prompt);
-        textView.setVisibility(View.GONE);
-        textView = (TextView) getView().findViewById(R.id.connection_state);
-        textView.setVisibility(View.GONE);
-        textView = (TextView) getView().findViewById(R.id.data_value_prompt);
-        textView.setVisibility(View.GONE);
-        textView = (TextView) getView().findViewById(R.id.data_value);
-        textView.setVisibility(View.GONE);
+        LinearLayout linearLayout = (LinearLayout) getView().findViewById(R.id.device_address_linear_layout);
+        linearLayout.setVisibility(View.GONE);
+        linearLayout = (LinearLayout) getView().findViewById(R.id.connection_state_linear_layout);
+        linearLayout.setVisibility(View.GONE);
+        linearLayout = (LinearLayout) getView().findViewById(R.id.data_value_linear_layout);
+        linearLayout.setVisibility(View.GONE);
 
         // Initializes list view adapter.
         mLeDeviceListAdapter = new LeDeviceListAdapter();
@@ -157,20 +155,16 @@ public class DeviceScanFragment extends Fragment{
         bleDeviceSelectedListener = null;
     }
 
-
-
-    /************ Device Scan Activity *************/
-
-
-
     // These are stop and scan buttons to use when scanning for bluetooth devices
     // we don't have an action bar so we can scrap them or implement a layout for this
     // fragment that has a button in the middle
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);    //BAD BAD BAD not using inflater parameter, but it's necessary to override Fragment's inflater
-        //inflater.inflate(R.menu.menu_main, menu);
-        super.onCreateOptionsMenu(menu,getActivity().getMenuInflater());
+        menu.clear();
+        inflater.inflate(R.menu.menu_main,menu);
+        getActivity().getActionBar().setTitle("BLE Devices");
+        getActivity().getActionBar().show();
+
         if (!mScanning) {
             menu.findItem(R.id.menu_stop).setVisible(false);
             menu.findItem(R.id.menu_scan).setVisible(true);
@@ -181,6 +175,8 @@ public class DeviceScanFragment extends Fragment{
             menu.findItem(R.id.menu_refresh).setActionView(
                     R.layout.actionbar_indeterminate_progress);
         }
+
+        super.onCreateOptionsMenu(menu,inflater);
 //        return true;
     }
 
