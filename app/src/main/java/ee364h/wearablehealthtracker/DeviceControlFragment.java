@@ -39,9 +39,6 @@ public class DeviceControlFragment extends Fragment {
 
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
-
-//    private OnFragmentInteractionListener mListener;
-
     private final static String TAG = DeviceControlFragment.class.getSimpleName();
 
     private TextView mConnectionState;
@@ -62,8 +59,8 @@ public class DeviceControlFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param myName Parameter 1.
-     * @param myAddress Parameter 2.
+     * @param myName - device name.
+     * @param myAddress - device address.
      * @return A new instance of fragment DeviceControlFragment.
      */
     public static DeviceControlFragment newInstance(String myName, String myAddress) {
@@ -79,14 +76,15 @@ public class DeviceControlFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /*@Override
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }*/
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,21 +92,10 @@ public class DeviceControlFragment extends Fragment {
         return inflater.inflate(R.layout.gatt_services_characteristics, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-
     @Override
     public void onStart(){
         super.onStart();
-//        getActivity().setContentView(R.layout.gatt_services_characteristics);
 
-//        final Intent intent = getIntent();
-        Log.d("DeviceControlFragment", getArguments().toString());
-//        View debug = getView();
         if (getArguments() != null) {
             mDeviceName = getArguments().getString(EXTRAS_DEVICE_NAME);
             mDeviceAddress = getArguments().getString(EXTRAS_DEVICE_ADDRESS);
@@ -121,6 +108,18 @@ public class DeviceControlFragment extends Fragment {
         mConnectionState = (TextView) getView().findViewById(R.id.connection_state);
         mDataField = (TextView) getView().findViewById(R.id.data_value);
 
+        // Hide the unnecessary view components
+        TextView textView = (TextView) getView().findViewById(R.id.device_address_prompt);
+        textView.setVisibility(View.VISIBLE);
+        textView = (TextView) getView().findViewById(R.id.connection_state_prompt);
+        textView.setVisibility(View.VISIBLE);
+        textView = (TextView) getView().findViewById(R.id.connection_state);
+        textView.setVisibility(View.VISIBLE);
+        textView = (TextView) getView().findViewById(R.id.data_value_prompt);
+        textView.setVisibility(View.VISIBLE);
+        textView = (TextView) getView().findViewById(R.id.data_value);
+        textView.setVisibility(View.VISIBLE);
+
 //        getActivity().getActionBar().setTitle(mDeviceName);
 //        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         Intent gattServiceIntent = new Intent(getActivity(), BluetoothLEService.class);
@@ -128,39 +127,34 @@ public class DeviceControlFragment extends Fragment {
 
     }
 
+
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-//        try {
-//            mListener = (OnFragmentInteractionListener) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+    public void onResume() {
+        super.onResume();
+        getActivity().registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+        if (mBluetoothLEService != null) {
+            final boolean result = mBluetoothLEService.connect(mDeviceAddress);
+            Log.d(TAG, "Connect request result=" + result);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(mGattUpdateReceiver);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unbindService(mServiceConnection);
+        mBluetoothLEService = null;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        mListener = null;
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        public void onFragmentInteraction(Uri uri);
-//    }
-
-    /******** Device Control Activity **************/
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -249,33 +243,6 @@ public class DeviceControlFragment extends Fragment {
         mDataField.setText(R.string.no_data);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-        if (mBluetoothLEService != null) {
-            final boolean result = mBluetoothLEService.connect(mDeviceAddress);
-            Log.d(TAG, "Connect request result=" + result);
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        getActivity().unregisterReceiver(mGattUpdateReceiver);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        getActivity().unbindService(mServiceConnection);
-        mBluetoothLEService = null;
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
