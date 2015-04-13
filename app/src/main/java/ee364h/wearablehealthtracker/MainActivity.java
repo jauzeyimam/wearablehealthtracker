@@ -32,7 +32,7 @@ public class MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("MainActivity", "onCreate Started");
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-//        getActionBar().hide();
+        getActionBar().hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_main);
@@ -139,6 +139,7 @@ public class MainActivity extends Activity
 
     @Override
     public void onBackPressed() {
+        getActionBar().hide();
         FragmentManager fragmentManager = getFragmentManager();
         if(fragmentManager.getBackStackEntryCount() != 0) {
             fragmentManager.popBackStack();

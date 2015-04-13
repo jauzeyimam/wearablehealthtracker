@@ -7,11 +7,13 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Handler;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -97,8 +99,16 @@ public class DeviceScanFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View V = inflater.inflate(R.layout.gatt_services_characteristics, container, false);
-        return V;
+        // create ContextThemeWrapper from the original Activity Context with the custom theme
+        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
+
+        // clone the inflater using the ContextThemeWrapper
+        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
+
+        // inflate the layout using the cloned inflater, not default inflater
+        return localInflater.inflate(R.layout.gatt_services_characteristics, container, false);
+        // View V = inflater.inflate(R.layout.gatt_services_characteristics, container, false);
+        // return V;
     }
 
     @Override
@@ -147,13 +157,13 @@ public class DeviceScanFragment extends Fragment{
         super.onPause();
         scanLeDevice(false);
         mLeDeviceListAdapter.clear();
+        getActivity().getActionBar().hide();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         setHasOptionsMenu(false);
-        getActivity().getActionBar().hide();
         bleDeviceSelectedListener = null;
     }
 

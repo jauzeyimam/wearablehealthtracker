@@ -1,10 +1,12 @@
 package ee364h.wearablehealthtracker;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,15 +50,19 @@ public class HomePageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        ActionBarActivity A = (ActionBarActivity) getActivity();
-//        ActionBar B = A.getSupportActionBar();
-        getActivity().getActionBar().hide();
+        // create ContextThemeWrapper from the original Activity Context with the custom theme
+        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.NoActionBarTheme);
 
-        return inflater.inflate(R.layout.home_page_layout, container, false);
+        // clone the inflater using the ContextThemeWrapper
+        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
+
+        // inflate the layout using the cloned inflater, not default inflater
+        return localInflater.inflate(R.layout.home_page_layout, container, false);
     }
 
     public void onStart(){
         super.onStart();
+        getActivity().getActionBar().hide();
 
         /******Buttons*******/
         ImageButton pedometer = (ImageButton ) getView().findViewById(R.id.pedometer_image);
