@@ -32,7 +32,7 @@ public class MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("MainActivity", "onCreate Started");
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        getActionBar().hide();
+//        getActionBar().hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_main);
@@ -104,7 +104,7 @@ public class MainActivity extends Activity
     };
 
     public void onBluetoothSelected(){
-        Log.d("MainActivity","SETTINGS SELECTED");
+        Log.d("MainActivity","BLUETOOTH SELECTED");
         // New SettingsFragment
         DeviceScanFragment bluetoothFragment = new DeviceScanFragment();
 
@@ -115,11 +115,11 @@ public class MainActivity extends Activity
 
         // Commit the transaction
         transaction.commit();
-        Log.d("MainActivity","BLUETOOTH FRAGMENT INITIATED");
+        Log.d("MainActivity","SCANNING FRAGMENT INITIATED");
     };
 
     public void onBLEDeviceSelected(String name, String address){
-        Log.d("MainActivity","SETTINGS SELECTED");
+        Log.d("MainActivity","DEVICE SELECTED");
         // New SettingsFragment
         DeviceControlFragment deviceControlFragment = new DeviceControlFragment();
         Bundle args = new Bundle();
@@ -134,7 +134,7 @@ public class MainActivity extends Activity
 
         // Commit the transaction
         transaction.commit();
-        Log.d("MainActivity","BLUETOOTH FRAGMENT INITIATED");
+        Log.d("MainActivity","CONTROL FRAGMENT INITIATED");
     };
 
     @Override

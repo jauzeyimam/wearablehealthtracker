@@ -152,6 +152,8 @@ public class DeviceScanFragment extends Fragment{
     @Override
     public void onDetach() {
         super.onDetach();
+        setHasOptionsMenu(false);
+        getActivity().getActionBar().hide();
         bleDeviceSelectedListener = null;
     }
 
@@ -213,7 +215,6 @@ public class DeviceScanFragment extends Fragment{
                 public void run() {
                     mScanning = false;
                     mBluetoothAdapter.stopLeScan(mLeScanCallback);
-//                    getActivity().invalidateOptionsMenu();
                 }
             }, SCAN_PERIOD);
 

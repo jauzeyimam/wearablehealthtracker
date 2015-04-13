@@ -85,6 +85,7 @@ public class DeviceControlFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -117,10 +118,10 @@ public class DeviceControlFragment extends Fragment {
         linearLayout = (LinearLayout) getView().findViewById(R.id.data_value_linear_layout);
         linearLayout.setVisibility(View.VISIBLE);;
 
-//        getActivity().getActionBar().setTitle(mDeviceName);
-//        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         Intent gattServiceIntent = new Intent(getActivity(), BluetoothLEService.class);
         getActivity().bindService(gattServiceIntent, mServiceConnection, getActivity().BIND_AUTO_CREATE);
+
+        getActivity().invalidateOptionsMenu();
 
     }
 
@@ -243,7 +244,11 @@ public class DeviceControlFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.gatt_services, menu);
+        menu.clear();
+        inflater.inflate(R.menu.gatt_services, menu);
+        getActivity().getActionBar().setTitle(mDeviceName);
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActivity().getActionBar().show();
         if (mConnected) {
             menu.findItem(R.id.menu_connect).setVisible(false);
             menu.findItem(R.id.menu_disconnect).setVisible(true);
@@ -251,7 +256,7 @@ public class DeviceControlFragment extends Fragment {
             menu.findItem(R.id.menu_connect).setVisible(true);
             menu.findItem(R.id.menu_disconnect).setVisible(false);
         }
-        return ;
+//        return ;
     }
 
     @Override

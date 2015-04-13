@@ -5,7 +5,6 @@
     <!--<item android:id="@+id/action_settings" android:title="@string/action_settings"-->
         <!--android:orderInCategory="100" app:showAsAction="never" />-->
     <item android:id="@+id/menu_refresh"
-        android:title="Refresh"
         android:checkable="false"
         android:orderInCategory="1"
         android:showAsAction="always"/>
