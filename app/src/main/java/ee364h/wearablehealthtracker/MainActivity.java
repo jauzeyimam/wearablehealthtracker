@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,14 +24,24 @@ import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Method;
+import java.util.UUID;
+
 public class MainActivity extends Activity
         implements GraphFragment.OnFragmentInteractionListener,
         HomePageFragment.OnGraphSelectedListener,
         HomePageFragment.OnSettingsSelectedListener, HomePageFragment.OnBluetoothSelectedListener, DeviceScanFragment.OnBLEDeviceSelectedListener {
 
+    private final static String TAG = MainActivity.class.getSimpleName();
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("MainActivity", "onCreate Started");
+        Log.d(TAG, "onCreate Started");
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getActionBar().hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -44,7 +55,15 @@ public class MainActivity extends Activity
                     .add(R.id.container, home)
                     .commit();
         }
-        Log.d("MainActivity","onCreate Finished");
+
+/*        final BluetoothManager bluetoothManager =
+                    (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        mBluetoothAdapter = bluetoothManager.getAdapter();
+        mDevice = mBluetoothAdapter.getRemoteDevice(HEADSET_MAC_ADDRESS);
+        Log.e(TAG,"mDevice received: " + mDevice.toString());*/
+
+
+        Log.d(TAG,"onCreate Finished");
 
         super.onCreate(savedInstanceState);
     }
@@ -89,7 +108,7 @@ public class MainActivity extends Activity
     };
 
     public void onSettingsSelected(){
-        Log.d("MainActivity","SETTINGS SELECTED");
+        Log.d(TAG,"SETTINGS SELECTED");
         // New SettingsFragment
         SettingsFragment settingsFragment = new SettingsFragment();
 
@@ -100,11 +119,11 @@ public class MainActivity extends Activity
 
         // Commit the transaction
         transaction.commit();
-        Log.d("MainActivity","SETTINGS FRAGMENT INITIATED");
+        Log.d(TAG,"SETTINGS FRAGMENT INITIATED");
     };
 
     public void onBluetoothSelected(){
-        Log.d("MainActivity","BLUETOOTH SELECTED");
+        Log.d(TAG,"BLUETOOTH SELECTED");
         // New SettingsFragment
         DeviceScanFragment bluetoothFragment = new DeviceScanFragment();
 
@@ -115,11 +134,11 @@ public class MainActivity extends Activity
 
         // Commit the transaction
         transaction.commit();
-        Log.d("MainActivity","SCANNING FRAGMENT INITIATED");
+        Log.d(TAG,"SCANNING FRAGMENT INITIATED");
     };
 
     public void onBLEDeviceSelected(String name, String address){
-        Log.d("MainActivity","DEVICE SELECTED");
+        Log.d(TAG,"DEVICE SELECTED");
         // New SettingsFragment
         DeviceControlFragment deviceControlFragment = new DeviceControlFragment();
         Bundle args = new Bundle();
@@ -134,8 +153,18 @@ public class MainActivity extends Activity
 
         // Commit the transaction
         transaction.commit();
-        Log.d("MainActivity","CONTROL FRAGMENT INITIATED");
+        Log.d(TAG,"CONTROL FRAGMENT INITIATED");
     };
+
+/*    @Override
+    public void onResume(){
+        try{
+            openDeviceConnection(mDevice);
+        }catch(IOException e) {
+            Log.d(TAG, "Failed to openDeviceConnection(mDevice);");
+        }
+        super.onResume();
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -149,4 +178,57 @@ public class MainActivity extends Activity
     }
 
     public void onFragmentInteraction(Uri uri){};
+
+    /*Bluetooth Device Simple*/
+/*    private static final String UUID_SERIAL_PORT_PROFILE 
+                           = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
+    private static final String HEADSET_MAC_ADDRESS = "FC:C5:72:23:A7:D8";
+    
+    private static BluetoothAdapter mBluetoothAdapter;
+    private static BluetoothDevice mDevice;
+
+    private BluetoothSocket mSocket = null;
+    private BufferedReader mBufferedReader = null;
+
+    private void openDeviceConnection(BluetoothDevice aDevice)
+            throws IOException {
+        InputStream aStream = null;
+        InputStreamReader aReader = null;
+        try {
+            mSocket = aDevice
+                    .createRfcommSocketToServiceRecord(getSerialPortUUID());
+            try{
+                Method createMethod = aDevice.getClass().getMethod("createInsecureRfcommSocket", new Class[] { int.class });
+                mSocket = (BluetoothSocket)createMethod.invoke(aDevice, 1);
+            }catch(Exception e){
+                Log.e(TAG,"Method Exception thrown: " +e.toString());
+            }
+            mSocket.connect();
+            aStream = mSocket.getInputStream();
+            aReader = new InputStreamReader( aStream );
+            mBufferedReader = new BufferedReader( aReader );
+            Log.e(TAG,aReader.toString());
+        } catch ( IOException e ) {
+            Log.e( TAG, "Could not connect to device", e );
+            close( mBufferedReader );
+            close( aReader );
+            close( aStream );
+            close( mSocket );
+            throw e;
+        }
+    }
+
+    private void close(Closeable aConnectedObject) {
+        if ( aConnectedObject == null ) return;
+        try {
+            aConnectedObject.close();
+        } catch ( IOException e ) {
+        }
+        aConnectedObject = null;
+    }
+
+    private UUID getSerialPortUUID() {
+        return UUID.fromString( UUID_SERIAL_PORT_PROFILE );
+    };*/
+
 }

@@ -196,6 +196,7 @@ public class DeviceControlFragment extends Fragment {
                 mConnected = true;
                 updateConnectionState(R.string.connected);
                 getActivity().invalidateOptionsMenu();
+
             } else if (BluetoothLEService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
                 updateConnectionState(R.string.disconnected);
@@ -204,6 +205,7 @@ public class DeviceControlFragment extends Fragment {
             } else if (BluetoothLEService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
                 displayGattServices(mBluetoothLEService.getSupportedGattServices());
+                mBluetoothLEService.enableTXNotification();
             } else if (BluetoothLEService.ACTION_DATA_AVAILABLE.equals(action)) {
                 displayData(intent.getStringExtra(BluetoothLEService.EXTRA_DATA));
             }
