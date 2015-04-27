@@ -58,5 +58,15 @@
             android:defaultValue="500" />
         <!--TODO: Choose which method is the best and add Temperature-->
     </PreferenceCategory>
+    <PreferenceCategory>
+        android:title="Other"
+        android:key="pref_key_other_settings"
+        android:summary="addition options"
+        <Preference
+            android:key="pref_key_clear_data"
+            android:summary="Clear Data Files from Internal Storage"
+            android:title="Clear Data"
+            ></Preference>
+    </PreferenceCategory>
 
 </PreferenceScreen>

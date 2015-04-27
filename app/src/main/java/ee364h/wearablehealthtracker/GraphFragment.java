@@ -1,10 +1,12 @@
 package ee364h.wearablehealthtracker;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,10 @@ import com.androidplot.ui.SizeLayoutType;
 import com.androidplot.ui.SizeMetrics;
 import com.androidplot.xy.*;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
@@ -31,6 +37,10 @@ public class GraphFragment extends Fragment {
     protected static final String ARG_GRAPHTYPE = "graphType";
     private GraphType thisGraphType;
     private OnFragmentInteractionListener mListener;
+    private final static String TAG = GraphFragment.class.getSimpleName();
+    private Number[] times;
+    private Number[] data;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -68,6 +78,10 @@ public class GraphFragment extends Fragment {
 
     public void onStart(){
         super.onStart();
+        Log.d(TAG,"OnStart Started");
+        getDataFromFile();
+        Log.d(TAG,"GetDataFromFile Called...");
+
 //        TextView textView = (TextView) getView().findViewById(R.id.defaultTextView);
 //        textView.append("- " + thisGraphType.name());
 
@@ -178,6 +192,32 @@ public class GraphFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+
+    private void getDataFromFile(){
+        String filename = ((MainActivity) getActivity()).getDataFilename();
+        try {
+            FileInputStream fis = getActivity().openFileInput(filename);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader bufferedReader = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String line;
+            int numLines = 0;
+            String [] values;
+            while ((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+                values = line.split(" ");
+                numLines++;
+            }
+            Log.d(TAG, "Data From File:\n" + sb.toString() +"\nNumber of lines: " + numLines);
+        }catch(FileNotFoundException e)
+        {
+            Log.d(TAG,"File Not Found: " + filename);
+            e.printStackTrace();
+        } catch(Exception e){
+            Log.d(TAG, "IO Exception reading data from " + filename);
+            e.printStackTrace();
+        }
     }
 
 }

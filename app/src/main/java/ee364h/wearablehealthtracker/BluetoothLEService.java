@@ -16,8 +16,10 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.UUID;
+import java.util.Date;
 
 public class BluetoothLEService extends Service {
     private final static String TAG = BluetoothLEService.class.getSimpleName();
@@ -27,6 +29,7 @@ public class BluetoothLEService extends Service {
     private String mBluetoothDeviceAddress;
     private BluetoothGatt mBluetoothGatt;
     private int mConnectionState = STATE_DISCONNECTED;
+    private Date date = new Date();
 
     private static final int STATE_DISCONNECTED = 0;
     private static final int STATE_CONNECTING = 1;
@@ -122,10 +125,6 @@ public class BluetoothLEService extends Service {
             if ((flag & 0x01) != 0) {
                 format = BluetoothGattCharacteristic.FORMAT_UINT16;
                 Log.d(TAG, "Heart rate format UINT16.");
-            } else if (TX_CHAR_UUID.equals(characteristic.getUuid())) {
-            
-           // Log.d(TAG, String.format("Received TX: %d",characteristic.getValue() ));
-            intent.putExtra(EXTRA_DATA, characteristic.getValue());
             } else {
                 format = BluetoothGattCharacteristic.FORMAT_UINT8;
                 Log.d(TAG, "Heart rate format UINT8.");
@@ -133,6 +132,19 @@ public class BluetoothLEService extends Service {
             final int heartRate = characteristic.getIntValue(format, 1);
             Log.d(TAG, String.format("Received heart rate: %d", heartRate));
             intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
+        } else if (TX_CHAR_UUID.equals(characteristic.getUuid())) {
+                // ByteBuffer bb = ByteBuffer.wrap(characteristic.getValue());
+                // String value = new String(characteristic.getValue());
+                long time = date.getTime();
+                int pulse = characteristic.getValue()[0];
+                int bloodox = characteristic.getValue()[1];
+                double temperature = ((characteristic.getValue()[3] & 0xff) << 8) | (characteristic.getValue()[2] & 0xff);
+                temperature = (temperature*0.02)-273.15;
+                int battery = ((characteristic.getValue()[4] & 0xff) << 8) | (characteristic.getValue()[5] & 0xff);
+                battery = battery/10;
+                String value = String.format("" + time + " " + pulse + " " + bloodox + " %.2f" + " " + battery, temperature);
+                Log.d(TAG, String.format("Received TX: " + value));
+                intent.putExtra(EXTRA_DATA, "" + value + "\n");
         } else {
             // For all other profiles, writes the data formatted in HEX.
             final byte[] data = characteristic.getValue();

@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +47,10 @@ public class DeviceControlFragment extends Fragment {
     private TextView mConnectionState;
     private TextView mDataField;
     private String mDeviceName;
+    private static final String UUID_SERIAL_PORT_PROFILE 
+                           = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
+    private static final String HEADSET_MAC_ADDRESS = "FC:C5:72:23:A7:D8";
+    private static final String HEADSET_NAME = "UART";
     private String mDeviceAddress;
     private ExpandableListView mGattServicesList;
     private BluetoothLEService mBluetoothLEService;
@@ -112,7 +117,7 @@ public class DeviceControlFragment extends Fragment {
         }
 
         // Sets up UI references.
-        ((TextView) getView().findViewById(R.id.device_address)).setText(mDeviceAddress);
+        ((TextView) getView().findViewById(R.id.device_address)).setText(HEADSET_MAC_ADDRESS);
         mGattServicesList = (ExpandableListView) getView().findViewById(R.id.gatt_services_list_expandable);
         mGattServicesList.setOnChildClickListener(servicesListClickListner);
         mConnectionState = (TextView) getView().findViewById(R.id.connection_state);
@@ -139,7 +144,7 @@ public class DeviceControlFragment extends Fragment {
         super.onResume();
         getActivity().registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         if (mBluetoothLEService != null) {
-            final boolean result = mBluetoothLEService.connect(mDeviceAddress);
+            final boolean result = mBluetoothLEService.connect(HEADSET_MAC_ADDRESS);
             Log.d(TAG, "Connect request result=" + result);
         }
     }
@@ -173,7 +178,7 @@ public class DeviceControlFragment extends Fragment {
                 getActivity().finish();
             }
             // Automatically connects to the device upon successful start-up initialization.
-            mBluetoothLEService.connect(mDeviceAddress);
+            mBluetoothLEService.connect(HEADSET_MAC_ADDRESS);
         }
 
         @Override
@@ -207,7 +212,9 @@ public class DeviceControlFragment extends Fragment {
                 displayGattServices(mBluetoothLEService.getSupportedGattServices());
                 mBluetoothLEService.enableTXNotification();
             } else if (BluetoothLEService.ACTION_DATA_AVAILABLE.equals(action)) {
+                Log.d(TAG,"Data Received: " + intent.getStringExtra(BluetoothLEService.EXTRA_DATA));
                 displayData(intent.getStringExtra(BluetoothLEService.EXTRA_DATA));
+                writeDataToFile(intent.getStringExtra(BluetoothLEService.EXTRA_DATA));
             }
         }
     };
@@ -256,7 +263,7 @@ public class DeviceControlFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.gatt_services, menu);
-        getActivity().getActionBar().setTitle(mDeviceName);
+        getActivity().getActionBar().setTitle(HEADSET_NAME);
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         getActivity().getActionBar().show();
         if (mConnected) {
@@ -273,7 +280,7 @@ public class DeviceControlFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.menu_connect:
-                mBluetoothLEService.connect(mDeviceAddress);
+                mBluetoothLEService.connect(HEADSET_MAC_ADDRESS);
                 return true;
             case R.id.menu_disconnect:
                 mBluetoothLEService.disconnect();
@@ -298,6 +305,21 @@ public class DeviceControlFragment extends Fragment {
         if (data != null) {
             mDataField.setText(data);
         }
+    }
+
+    private void writeDataToFile(String data){
+        if(data != null){
+            String filename = ((MainActivity) getActivity()).getDataFilename();
+            FileOutputStream outputStream;
+            try {
+              outputStream = getActivity().openFileOutput(filename, Context.MODE_APPEND);
+              outputStream.write(data.getBytes());
+              outputStream.close();
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+        }
+
     }
 
     // Demonstrates how to iterate through the supported GATT Services/Characteristics.

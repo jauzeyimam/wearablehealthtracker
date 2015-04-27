@@ -1,6 +1,7 @@
 package ee364h.wearablehealthtracker;
 
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
 /**
@@ -13,6 +14,13 @@ public class SettingsFragment extends PreferenceFragment{
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
-    }
-
+    	Preference clear_data = (Preference)findPreference("pref_key_clear_data");
+    	clear_data.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+    		@Override
+    		public boolean onPreferenceClick(Preference preference){
+    			getActivity().deleteFile(((MainActivity)getActivity()).getDataFilename());
+    			return true;
+    		}
+    	});
+	}
 }

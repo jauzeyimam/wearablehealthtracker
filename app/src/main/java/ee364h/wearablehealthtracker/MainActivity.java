@@ -38,6 +38,7 @@ public class MainActivity extends Activity
         HomePageFragment.OnSettingsSelectedListener, HomePageFragment.OnBluetoothSelectedListener, DeviceScanFragment.OnBLEDeviceSelectedListener {
 
     private final static String TAG = MainActivity.class.getSimpleName();
+    private final static String DATA_FILENAME = "HealthTrackerData.txt";
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,6 +179,10 @@ public class MainActivity extends Activity
     }
 
     public void onFragmentInteraction(Uri uri){};
+
+    public String getDataFilename(){
+        return DATA_FILENAME;
+    }
 
     /*Bluetooth Device Simple*/
 /*    private static final String UUID_SERIAL_PORT_PROFILE 
