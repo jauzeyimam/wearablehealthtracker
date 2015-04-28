@@ -52,7 +52,8 @@ public class MainActivity extends Activity
     private final static String DATA_FILENAME = "HealthTrackerData.txt";
     
     private Bundle currentData;
-    private float stepCount = 0;
+    private float stepCount;
+    private boolean connectionStatus;
     private SensorManager sensorManager;
     static PackageManager packageManager;
     
@@ -65,6 +66,19 @@ public class MainActivity extends Activity
 
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
+
+            sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+            currentData = new Bundle();
+            currentData.putLong("time", 0);
+            currentData.putInt("pulse", 0);
+            currentData.putInt("bloodox",0);
+            currentData.putDouble("temperature",0);
+            currentData.putInt("battery",0);
+            currentData.putString("values","");
+
+            stepCount = 0;
+            connectionStatus = false;
 
             HomePageFragment home = new HomePageFragment();
 
@@ -79,21 +93,29 @@ public class MainActivity extends Activity
         mDevice = mBluetoothAdapter.getRemoteDevice(HEADSET_MAC_ADDRESS);
         Log.e(TAG,"mDevice received: " + mDevice.toString());*/
 
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-
-        currentData = new Bundle();
-        currentData.putLong("time", 0);
-        currentData.putInt("pulse", 0);
-        currentData.putInt("bloodox",0);
-        currentData.putDouble("temperature",0);
-        currentData.putInt("battery",0);
-        currentData.putString("values","");
 
         Log.d(TAG,"onCreate Finished");
 
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        packageManager = getPackageManager();
+
+        if(packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_COUNTER)){
+            Toast.makeText(this, "Pedometer Feature is available.",Toast.LENGTH_LONG).show();
+        }
+
+        Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        if(countSensor != null){
+            sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        }
+        else{
+            Toast.makeText(this, "Count sensor not available.", Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -182,29 +204,6 @@ public class MainActivity extends Activity
         Log.d(TAG,"CONTROL FRAGMENT INITIATED");
     };
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        /*try{
-            openDeviceConnection(mDevice);
-        }catch(IOException e) {
-            Log.d(TAG, "Failed to openDeviceConnection(mDevice);");
-        }*/
-        super.onResume();
-        packageManager = getPackageManager();
-
-        if(packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_COUNTER)){
-            Toast.makeText(this, "Pedometer Feature is available.",Toast.LENGTH_LONG).show();
-        }
-
-        Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        if(countSensor != null){
-            sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        }
-        else{
-            Toast.makeText(this, "Count sensor not available.", Toast.LENGTH_LONG).show();
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -228,11 +227,19 @@ public class MainActivity extends Activity
     public Bundle getCurrentData(){
         return currentData;
     }
+    public Boolean getConnectionStatus(){
+        return connectionStatus;
+    }
 
     public void updateCurrentData(Bundle bundle){
         this.currentData = bundle;
         HomePageFragment home = (HomePageFragment) getFragmentManager().findFragmentByTag(HOME_FRAGMENT_TAG);
         home.updateMeasurements();
+    }
+    public void updateBluetoothConnectionStatus(boolean connected){
+        this.connectionStatus = connected;
+        HomePageFragment home = (HomePageFragment) getFragmentManager().findFragmentByTag(HOME_FRAGMENT_TAG);
+        home.updateBluetoothButton();
     }
 
     @Override

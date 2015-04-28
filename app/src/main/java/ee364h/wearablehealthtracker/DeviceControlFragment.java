@@ -201,11 +201,13 @@ public class DeviceControlFragment extends Fragment {
                 mConnected = true;
                 updateConnectionState(R.string.connected);
                 getActivity().invalidateOptionsMenu();
+                ((MainActivity)getActivity()).updateBluetoothConnectionStatus(true);
 
             } else if (BluetoothLEService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
                 updateConnectionState(R.string.disconnected);
                 getActivity().invalidateOptionsMenu();
+                ((MainActivity)getActivity()).updateBluetoothConnectionStatus(false);
                 clearUI();
             } else if (BluetoothLEService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.

@@ -32,6 +32,7 @@ public class HomePageFragment extends Fragment {
     private OnGraphSelectedListener graphListener;
     private OnSettingsSelectedListener settingsListener;    //TODO: merge the two listeners, interfaces, methods into one that just decides how the activity responds to button presses in general
     private OnBluetoothSelectedListener bluetoothListener;
+    private boolean isRunning;
 
     /**
      * Use this factory method to create a new instance of
@@ -49,6 +50,7 @@ public class HomePageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isRunning = true;
     }
 
     @Override
@@ -67,8 +69,10 @@ public class HomePageFragment extends Fragment {
     public void onStart(){
         super.onStart();
         getActivity().getActionBar().hide();
+        isRunning = true;
         updateStepCount();
         updateMeasurements();
+        updateBluetoothButton();
 
         /******Buttons*******/
         ImageButton pedometer = (ImageButton ) getView().findViewById(R.id.pedometer_image);
@@ -128,6 +132,12 @@ public class HomePageFragment extends Fragment {
     }
 
     @Override
+    public void onPause(){
+        isRunning = false;
+        super.onPause();
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         graphListener = null;
@@ -136,38 +146,66 @@ public class HomePageFragment extends Fragment {
     }
 
     public void updateStepCount(){
-        if (this.isVisible()) {
+        if (this.isRunning) {
             TextView pedometer_value = (TextView) getView().findViewById(R.id.pedometer_value);
             pedometer_value.setText(String.format("%.0f", (((MainActivity) getActivity()).getStepCount())));
         }
     }
     public void updateMeasurements(){    
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        
-        TextView pulse_value = (TextView) getView().findViewById(R.id.pulse_value);
-        int current_pulse = ((MainActivity) getActivity()).getCurrentData().getInt("pulse");
-        pulse_value.setText("" + current_pulse);
+        if(this.isRunning) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        TextView temperature_value = (TextView) getView().findViewById(R.id.temperature_value);
-        double current_temp = ((MainActivity) getActivity()).getCurrentData().getDouble("temperature");
-        temperature_value.setText(String.format("%.2f",current_temp));
-        
-        TextView bloodOx_value = (TextView) getView().findViewById(R.id.bloodOx_value);
-        int current_bloodOx = ((MainActivity) getActivity()).getCurrentData().getInt("bloodox");
-        bloodOx_value.setText("" + current_bloodOx);
+            TextView pulse_value = (TextView) getView().findViewById(R.id.pulse_value);
+            int current_pulse = ((MainActivity) getActivity()).getCurrentData().getInt("pulse");
+            pulse_value.setText("" + current_pulse);
 
-        
-        ProgressBar pulse_progress = (ProgressBar) getView().findViewById(R.id.pulse_progress);
-        pulse_progress.setMax(Integer.valueOf(prefs.getString("pref_key_goal_pulse", "70")));
-        pulse_progress.setProgress(current_pulse);
-        
-        ProgressBar bloodOx_progress = (ProgressBar) getView().findViewById(R.id.bloodOx_progress);
-        bloodOx_progress.setMax(Integer.valueOf(prefs.getString("pref_key_goal_bloodox", "100")));
-        bloodOx_progress.setProgress(current_bloodOx);
-        
-        ProgressBar temperature_progress = (ProgressBar) getView().findViewById(R.id.temperature_progress);
-        temperature_progress.setMax(Integer.valueOf(prefs.getString("pref_key_goal_temperature", "37"))*100);
-        temperature_progress.setProgress((int) Math.floor(current_temp*100));
+            TextView temperature_value = (TextView) getView().findViewById(R.id.temperature_value);
+            double current_temp = ((MainActivity) getActivity()).getCurrentData().getDouble("temperature");
+            temperature_value.setText(String.format("%.2f", current_temp));
+
+            TextView bloodOx_value = (TextView) getView().findViewById(R.id.bloodOx_value);
+            int current_bloodOx = ((MainActivity) getActivity()).getCurrentData().getInt("bloodox");
+            bloodOx_value.setText("" + current_bloodOx);
+
+            ProgressBar pulse_progress = (ProgressBar) getView().findViewById(R.id.pulse_progress);
+            pulse_progress.setMax(Integer.valueOf(prefs.getString("pref_key_goal_pulse", "70")));
+            if (current_pulse > pulse_progress.getMax()) {
+                pulse_progress.setSecondaryProgress(pulse_progress.getMax());
+                pulse_progress.setProgress(current_pulse - pulse_progress.getMax());
+            } else {
+                pulse_progress.setProgress(current_pulse);
+            }
+
+            ProgressBar bloodOx_progress = (ProgressBar) getView().findViewById(R.id.bloodOx_progress);
+            bloodOx_progress.setMax(Integer.valueOf(prefs.getString("pref_key_goal_bloodox", "100")));
+            if (current_bloodOx > bloodOx_progress.getMax()) {
+                bloodOx_progress.setSecondaryProgress(bloodOx_progress.getMax());
+                bloodOx_progress.setProgress(current_bloodOx - bloodOx_progress.getMax());
+            } else {
+                bloodOx_progress.setProgress(current_bloodOx);
+            }
+
+            ProgressBar temperature_progress = (ProgressBar) getView().findViewById(R.id.temperature_progress);
+            temperature_progress.setMax(Integer.valueOf(prefs.getString("pref_key_goal_temperature", "37")) * 100);
+            if (current_temp > temperature_progress.getMax()) {
+                temperature_progress.setSecondaryProgress(temperature_progress.getMax());
+                temperature_progress.setProgress(((int) Math.floor(current_temp * 100)) - temperature_progress.getMax());
+            } else {
+                temperature_progress.setProgress(((int) Math.floor(current_temp * 100)));
+            }
+        }
+    }
+
+    public void updateBluetoothButton(){
+        if(this.isRunning){
+            ImageButton bluetooth = (ImageButton) getView().findViewById(R.id.bluetooth_image);
+            if(((MainActivity)getActivity()).getConnectionStatus()){
+                bluetooth.setImageResource(R.drawable.bluetooth_blue);
+            }
+            else{
+                bluetooth.setImageResource(R.drawable.bluetooth);
+            }
+        }
     }
 
     /****LaunchGraph****
