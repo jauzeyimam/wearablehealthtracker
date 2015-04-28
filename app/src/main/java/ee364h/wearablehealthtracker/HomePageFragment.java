@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 
 /**
@@ -63,6 +64,7 @@ public class HomePageFragment extends Fragment {
     public void onStart(){
         super.onStart();
         getActivity().getActionBar().hide();
+        updateStepCount();
 
         /******Buttons*******/
         ImageButton pedometer = (ImageButton ) getView().findViewById(R.id.pedometer_image);
@@ -127,6 +129,11 @@ public class HomePageFragment extends Fragment {
         graphListener = null;
         settingsListener = null;
         bluetoothListener = null;
+    }
+
+    public void updateStepCount(){
+        TextView pedometer_value = (TextView) getView().findViewById(R.id.pedometer_value);
+        pedometer_value.setText(String.format("%.0f",(((MainActivity) getActivity()).getStepCount())));
     }
 
     /****LaunchGraph****

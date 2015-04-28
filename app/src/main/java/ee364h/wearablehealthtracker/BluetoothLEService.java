@@ -13,6 +13,7 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -142,9 +143,19 @@ public class BluetoothLEService extends Service {
                 temperature = (temperature*0.02)-273.15;
                 int battery = ((characteristic.getValue()[4] & 0xff) << 8) | (characteristic.getValue()[5] & 0xff);
                 battery = battery/10;
-                String value = String.format("" + time + " " + pulse + " " + bloodox + " %.2f" + " " + battery, temperature);
-                Log.d(TAG, String.format("Received TX: " + value));
-                intent.putExtra(EXTRA_DATA, "" + value + "\n");
+                String values = String.format("" + time + " " + pulse + " " + bloodox + " %.2f" + " " + battery, temperature);
+                Log.d(TAG, String.format("Received TX: " + values));
+                
+                // Add data to bundle
+                Bundle bundle = new Bundle();
+                bundle.putLong("time", time);
+                bundle.putInt("pulse", pulse);
+                bundle.putInt("bloodox",bloodox);
+                bundle.putDouble("temperature",temperature);
+                bundle.putInt("battery",battery);
+                bundle.putString("values",values);
+                
+                intent.putExtra(EXTRA_DATA, bundle);
         } else {
             // For all other profiles, writes the data formatted in HEX.
             final byte[] data = characteristic.getValue();

@@ -12,6 +12,10 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -35,10 +39,20 @@ import java.util.UUID;
 public class MainActivity extends Activity
         implements GraphFragment.OnFragmentInteractionListener,
         HomePageFragment.OnGraphSelectedListener,
-        HomePageFragment.OnSettingsSelectedListener, HomePageFragment.OnBluetoothSelectedListener, DeviceScanFragment.OnBLEDeviceSelectedListener {
+        HomePageFragment.OnSettingsSelectedListener, HomePageFragment.OnBluetoothSelectedListener, 
+        DeviceScanFragment.OnBLEDeviceSelectedListener, SensorEventListener {
+
+    private final static String HOME_FRAGMENT_TAG = "HomePageFragment";
+    private final static String GRAPH_FRAGMENT_TAG = "GraphFragment";
+    private final static String BLUETOOTH_FRAGMENT_TAG = "DeviceScanFragment";
+    private final static String BLUETOOTH_DEVICE_FRAGMENT_TAG = "DeviceControlFragment";
+    private final static String SETTINGS_FRAGMENT_TAG = "SettingsFragment";
 
     private final static String TAG = MainActivity.class.getSimpleName();
     private final static String DATA_FILENAME = "HealthTrackerData.txt";
+    private float stepCount = 0;
+    private SensorManager sensorManager;
+    static PackageManager packageManager;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +67,7 @@ public class MainActivity extends Activity
             HomePageFragment home = new HomePageFragment();
 
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, home)
+                    .add(R.id.container, home, HOME_FRAGMENT_TAG)
                     .commit();
         }
 
@@ -63,6 +77,7 @@ public class MainActivity extends Activity
         mDevice = mBluetoothAdapter.getRemoteDevice(HEADSET_MAC_ADDRESS);
         Log.e(TAG,"mDevice received: " + mDevice.toString());*/
 
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         Log.d(TAG,"onCreate Finished");
 
@@ -101,7 +116,7 @@ public class MainActivity extends Activity
 
         //Replace HomePageFragment with GraphFragment
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, graphFragment);
+        transaction.replace(R.id.container, graphFragment, GRAPH_FRAGMENT_TAG);
         transaction.addToBackStack(null);
 
         // Commit the transaction
@@ -115,7 +130,7 @@ public class MainActivity extends Activity
 
         //Replace HomePageFragment with GraphFragment
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, settingsFragment);
+        transaction.replace(R.id.container, settingsFragment, SETTINGS_FRAGMENT_TAG);
         transaction.addToBackStack(null);
 
         // Commit the transaction
@@ -130,7 +145,7 @@ public class MainActivity extends Activity
 
         //Replace HomePageFragment with GraphFragment
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, bluetoothFragment);
+        transaction.replace(R.id.container, bluetoothFragment, BLUETOOTH_FRAGMENT_TAG);
         transaction.addToBackStack(null);
 
         // Commit the transaction
@@ -149,7 +164,7 @@ public class MainActivity extends Activity
 
         //Replace HomePageFragment with GraphFragment
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, deviceControlFragment);
+        transaction.replace(R.id.container, deviceControlFragment, BLUETOOTH_DEVICE_FRAGMENT_TAG);
         transaction.addToBackStack(null);
 
         // Commit the transaction
@@ -157,15 +172,28 @@ public class MainActivity extends Activity
         Log.d(TAG,"CONTROL FRAGMENT INITIATED");
     };
 
-/*    @Override
+    @Override
     public void onResume(){
-        try{
+        /*try{
             openDeviceConnection(mDevice);
         }catch(IOException e) {
             Log.d(TAG, "Failed to openDeviceConnection(mDevice);");
+        }*/
+        packageManager = getPackageManager();
+
+        if(packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_COUNTER)){
+            Toast.makeText(this, "Pedometer Feature is available.",Toast.LENGTH_LONG).show();
+        } 
+
+        Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        if(countSensor != null){
+            sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI);
+        }
+        else{
+            Toast.makeText(this, "Count sensor not available.", Toast.LENGTH_LONG).show();
         }
         super.onResume();
-    }*/
+    }
 
     @Override
     public void onBackPressed() {
@@ -182,6 +210,20 @@ public class MainActivity extends Activity
 
     public String getDataFilename(){
         return DATA_FILENAME;
+    }
+    public float getStepCount(){
+        return stepCount;
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event){
+        stepCount =  event.values[0];
+        HomePageFragment home = (HomePageFragment) getFragmentManager().findFragmentByTag(HOME_FRAGMENT_TAG);
+        home.updateStepCount();
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
     /*Bluetooth Device Simple*/

@@ -212,9 +212,10 @@ public class DeviceControlFragment extends Fragment {
                 displayGattServices(mBluetoothLEService.getSupportedGattServices());
                 mBluetoothLEService.enableTXNotification();
             } else if (BluetoothLEService.ACTION_DATA_AVAILABLE.equals(action)) {
-                Log.d(TAG,"Data Received: " + intent.getStringExtra(BluetoothLEService.EXTRA_DATA));
-                displayData(intent.getStringExtra(BluetoothLEService.EXTRA_DATA));
-                writeDataToFile(intent.getStringExtra(BluetoothLEService.EXTRA_DATA));
+                Bundle bundle = intent.getBundleExtra(BluetoothLEService.EXTRA_DATA);
+                Log.d(TAG,"Data Received: " + bundle.getString("values"));
+                displayData(bundle.getString("values"));
+                writeDataToFile(bundle.getString("values"));
             }
         }
     };
