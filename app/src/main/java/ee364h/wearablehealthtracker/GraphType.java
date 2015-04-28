@@ -7,9 +7,9 @@ package ee364h.wearablehealthtracker;
  */
 public enum GraphType {
 
-    PEDOMETER("Pedometer", -1, "Steps", "steps") {
+    PEDOMETER("Pedometer", 1, "Steps", "steps") {
         public Number getValueFromStringArray (String[]values){
-            return null;
+            return Integer.valueOf(values[this.getValueLocation()]);
         }
     },
     PULSE("Pulse",1,"Heart Rate", "bpm"){
@@ -30,16 +30,25 @@ public enum GraphType {
     
     abstract public Number getValueFromStringArray(String[] values);
 
+    private final static String DATA_FILENAME = "HealthTrackerData.txt";
+    private final static String PEDOMETER_FILENAME = "PedometerData.txt";
+
     private String name;
     private int valueLocation;
     private String title;
     private String units;
+    private String filename;
 
     private GraphType(String name, int valueLocation, String title, String units){
     	this.name = name;
     	this.valueLocation = valueLocation;
     	this.title = title;
     	this.units = units;
+        if(this.name.equals("Pedometer")) {
+            this.filename = PEDOMETER_FILENAME;
+        }else{
+            this.filename = DATA_FILENAME;
+        }
     }
     public String getName(){
     	return this.name;
@@ -53,4 +62,5 @@ public enum GraphType {
     public String getUnits(){
     	return this.units;
     }
+    public String getFilename(){return this.filename;}
 }

@@ -31,11 +31,13 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.UUID;
 
 public class MainActivity extends Activity
@@ -51,8 +53,8 @@ public class MainActivity extends Activity
     private final static String SETTINGS_FRAGMENT_TAG = "SettingsFragment";
 
     private final static String TAG = MainActivity.class.getSimpleName();
-    private final static String DATA_FILENAME = "HealthTrackerData.txt";
     
+    private Date date = new Date();
     private Bundle currentData;
     private float stepCount;
     private boolean connectionStatus;
@@ -71,18 +73,18 @@ public class MainActivity extends Activity
 
             sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-            String filePath = getFilesDir() + "/" + DATA_FILENAME;
+            String filePath = getFilesDir() + "/" + getDataFilename();
             File mFile = new File( filePath );
             currentData = new Bundle();
             if(mFile.exists())
             {
                 String lastLine = tail(mFile);
                 String[] values = lastLine.split(" ");
-                currentData.putLong("time", (long) Long.valueOf(values[0]));
+                currentData.putLong("time", Long.valueOf(values[0]));
                 currentData.putInt("pulse", (int) GraphType.PULSE.getValueFromStringArray(values));
                 currentData.putInt("bloodox",(int) GraphType.BLOODOX.getValueFromStringArray(values));
                 currentData.putDouble("temperature",(double) GraphType.TEMPERATURE.getValueFromStringArray(values));
-                currentData.putInt("battery",(int) Integer.valueOf(values[4]));
+                currentData.putInt("battery", Integer.valueOf(values[4]));
                 currentData.putString("values",lastLine);
             } else{
                 currentData.putLong("time", 0);
@@ -235,7 +237,10 @@ public class MainActivity extends Activity
     public void onFragmentInteraction(Uri uri){};
 
     public String getDataFilename(){
-        return DATA_FILENAME;
+        return GraphType.PULSE.getFilename();
+    }
+    public String getPedometerFilename(){
+        return GraphType.PEDOMETER.getFilename();
     }
     public float getStepCount(){
         return stepCount;
@@ -261,6 +266,20 @@ public class MainActivity extends Activity
     @Override
     public void onSensorChanged(SensorEvent event){
         stepCount =  event.values[0];
+        long time = date.getTime();
+        String data = String.format("" + time + " %.0f", stepCount);
+
+        String filename = getPedometerFilename();
+        FileOutputStream outputStream;
+        try {
+          outputStream = openFileOutput(filename, Context.MODE_APPEND);
+          outputStream.write(data.getBytes());
+          outputStream.write("\n".getBytes());
+          outputStream.close();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+
         HomePageFragment home = (HomePageFragment) getFragmentManager().findFragmentByTag(HOME_FRAGMENT_TAG);
         home.updateStepCount();
     }

@@ -154,10 +154,10 @@ public class DeviceScanFragment extends Fragment{
 
     @Override
     public void onPause() {
-        super.onPause();
         scanLeDevice(false);
         mLeDeviceListAdapter.clear();
         getActivity().getActionBar().hide();
+        super.onPause();
     }
 
     @Override
@@ -211,7 +211,7 @@ public class DeviceScanFragment extends Fragment{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // User chose not to enable Bluetooth.
         if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
-            getActivity().finish();
+            getActivity().onBackPressed();
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);

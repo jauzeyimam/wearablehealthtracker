@@ -147,8 +147,22 @@ public class HomePageFragment extends Fragment {
 
     public void updateStepCount(){
         if (this.isRunning) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
             TextView pedometer_value = (TextView) getView().findViewById(R.id.pedometer_value);
-            pedometer_value.setText(String.format("%.0f", (((MainActivity) getActivity()).getStepCount())));
+            int current_steps = (int) Math.floor(((MainActivity) getActivity()).getStepCount());
+            pedometer_value.setText("" + current_steps);
+            
+            ProgressBar pedometer_progress = (ProgressBar) getView().findViewById(R.id.pedometer_progress);
+            pedometer_progress.setMax(Integer.valueOf(prefs.getString("pref_key_goal_pulse", "70")));
+            if(current_steps>pedometer_progress.getMax()){
+                pedometer_progress.setSecondaryProgress(pedometer_progress.getMax());
+                pedometer_progress.setProgress(current_steps-pedometer_progress.getMax());
+            } else{
+                pedometer_progress.setProgress(current_steps);
+                pedometer_progress.setSecondaryProgress(0);
+            }
+
         }
     }
     public void updateMeasurements(){    

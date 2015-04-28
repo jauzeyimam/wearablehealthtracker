@@ -205,7 +205,7 @@ public class GraphFragment extends Fragment {
     }
 
     private void getDataFromFile(){
-        String filename = ((MainActivity) getActivity()).getDataFilename();
+        String filename = thisGraphType.getFilename();
         try {
             FileInputStream fis = getActivity().openFileInput(filename);
             InputStreamReader isr = new InputStreamReader(fis);
@@ -217,9 +217,7 @@ public class GraphFragment extends Fragment {
             while ((line = bufferedReader.readLine()) != null) {
                 sb.append(line);
                 values = line.split(" ");
-                if(thisGraphType != GraphType.PEDOMETER){
-                    series1Numbers.add(thisGraphType.getValueFromStringArray(values));
-                }
+                series1Numbers.add(thisGraphType.getValueFromStringArray(values));
                 times.add(Long.valueOf(values[0]));
                 numLines++;
             }

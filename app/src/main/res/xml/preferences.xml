@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference
+    <!-- <CheckBoxPreference
         android:key="pref_key_bluetooth"
         android:summary="@string/pref_summary_bluetooth"
         android:title="@string/pref_title_bluetooth"
-        android:defaultValue="true" />
+        android:defaultValue="true" /> -->
 
     <PreferenceCategory
         android:title="@string/pref_title_goals"
@@ -36,7 +36,7 @@
             android:defaultValue="37" />
     </PreferenceCategory>
 
-    <PreferenceCategory
+<!--     <PreferenceCategory
         android:title="@string/pref_title_sampling_rates"
         android:key="pref_key_sampling_rates_settings"
         android:summary="@string/pref_summary_sampling_rates" >
@@ -60,12 +60,11 @@
             android:entries="@array/pref_entries_sampling_rate_pulse"
             android:entryValues="@array/pref_entryValues_sampling_rate_pulse"
             android:defaultValue="500" />
-        <!--TODO: Choose which method is the best and add Temperature-->
-    </PreferenceCategory>
-    <PreferenceCategory>
-        android:title="Other"
+    </PreferenceCategory> -->
+    <PreferenceCategory
         android:key="pref_key_other_settings"
         android:summary="additional options"
+        android:title="Other">
         <Preference
             android:key="pref_key_clear_data"
             android:summary="Clear Data Files from Internal Storage"

@@ -18,7 +18,8 @@ public class SettingsFragment extends PreferenceFragment{
     	clear_data.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
     		@Override
     		public boolean onPreferenceClick(Preference preference){
-    			getActivity().deleteFile(((MainActivity)getActivity()).getDataFilename());
+    			getActivity().deleteFile(GraphType.PULSE.getFilename());
+    			getActivity().deleteFile(GraphType.PEDOMETER.getFilename());
     			return true;
     		}
     	});
