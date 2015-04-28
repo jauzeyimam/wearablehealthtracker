@@ -174,6 +174,7 @@ public class MainActivity extends Activity
 
     @Override
     public void onResume(){
+        super.onResume();
         /*try{
             openDeviceConnection(mDevice);
         }catch(IOException e) {
@@ -187,12 +188,11 @@ public class MainActivity extends Activity
 
         Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         if(countSensor != null){
-            sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI);
+            sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
         else{
             Toast.makeText(this, "Count sensor not available.", Toast.LENGTH_LONG).show();
         }
-        super.onResume();
     }
 
     @Override
