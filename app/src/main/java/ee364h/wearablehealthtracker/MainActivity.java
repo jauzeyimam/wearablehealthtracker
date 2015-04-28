@@ -50,6 +50,8 @@ public class MainActivity extends Activity
 
     private final static String TAG = MainActivity.class.getSimpleName();
     private final static String DATA_FILENAME = "HealthTrackerData.txt";
+    
+    private Bundle currentData;
     private float stepCount = 0;
     private SensorManager sensorManager;
     static PackageManager packageManager;
@@ -78,6 +80,14 @@ public class MainActivity extends Activity
         Log.e(TAG,"mDevice received: " + mDevice.toString());*/
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+        currentData = new Bundle();
+        currentData.putLong("time", 0);
+        currentData.putInt("pulse", 0);
+        currentData.putInt("bloodox",0);
+        currentData.putDouble("temperature",0);
+        currentData.putInt("battery",0);
+        currentData.putString("values","");
 
         Log.d(TAG,"onCreate Finished");
 
@@ -179,20 +189,20 @@ public class MainActivity extends Activity
         }catch(IOException e) {
             Log.d(TAG, "Failed to openDeviceConnection(mDevice);");
         }*/
+        super.onResume();
         packageManager = getPackageManager();
 
         if(packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_COUNTER)){
             Toast.makeText(this, "Pedometer Feature is available.",Toast.LENGTH_LONG).show();
-        } 
+        }
 
         Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         if(countSensor != null){
-            sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI);
+            sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
         else{
             Toast.makeText(this, "Count sensor not available.", Toast.LENGTH_LONG).show();
         }
-        super.onResume();
     }
 
     @Override
@@ -213,6 +223,15 @@ public class MainActivity extends Activity
     }
     public float getStepCount(){
         return stepCount;
+    }
+    public Bundle getCurrentData(){
+        return currentData;
+    }
+
+    public void updateCurrentData(Bundle bundle){
+        this.currentData = bundle;
+        HomePageFragment home = (HomePageFragment) getFragmentManager().findFragmentByTag(HOME_FRAGMENT_TAG);
+        home.updateMeasurements();
     }
 
     @Override

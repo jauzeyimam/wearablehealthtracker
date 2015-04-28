@@ -9,20 +9,20 @@
     <string name="pref_title_bluetooth">Bluetooth</string>
     <string name="pref_summary_bluetooth">Turn on Bluetooth Pairing with headset</string>
 
-    <string name="pref_title_modules">Modules</string>
-    <string name="pref_summary_module">Turn Modules On or Off</string>
+    <string name="pref_title_goals">Goals</string>
+    <string name="pref_summary_goal">Progress bars show how clsoe you are to personal goals</string>
 
-    <string name="pref_title_module_pedometer">Pedometer</string>
-    <string name="pref_summary_module_pedometer">Turn off step counter</string>
+    <string name="pref_title_goal_pedometer">Pedometer</string>
+    <string name="pref_summary_goal_pedometer">Steps Goal</string>
     
-    <string name="pref_title_module_bloodox">Blood Oxygen</string>
-    <string name="pref_summary_module_bloodox">Turn off blood oxygen concentration measurements</string>
+    <string name="pref_title_goal_bloodox">Blood Oxygen</string>
+    <string name="pref_summary_goal_bloodox">Blood Oxygen Saturation Goal</string>
     
-    <string name="pref_title_module_pulse">Pulse</string>
-    <string name="pref_summary_module_pulse">Turn off pulse rate measurement</string>
+    <string name="pref_title_goal_pulse">Pulse</string>
+    <string name="pref_summary_goal_pulse">Heart Rate Goal</string>
     
-    <string name="pref_title_module_temperature">Thermometer</string>
-    <string name="pref_summary_module_temperature">Turn off temperature measurements</string>
+    <string name="pref_title_goal_temperature">Thermometer</string>
+    <string name="pref_summary_goal_temperature">Temperature Goal</string>
 
     <string name="pref_title_sampling_rates">Sampling Rates</string>
    	<string name="pref_summary_sampling_rates">Adjust how often a measurement is taken, lower sampling rates can increase battery life. Sampling rates can range from ### to ####.</string>

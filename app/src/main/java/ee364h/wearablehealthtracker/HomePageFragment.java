@@ -2,8 +2,10 @@ package ee364h.wearablehealthtracker;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.ContextThemeWrapper;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -65,6 +68,7 @@ public class HomePageFragment extends Fragment {
         super.onStart();
         getActivity().getActionBar().hide();
         updateStepCount();
+        updateMeasurements();
 
         /******Buttons*******/
         ImageButton pedometer = (ImageButton ) getView().findViewById(R.id.pedometer_image);
@@ -134,6 +138,34 @@ public class HomePageFragment extends Fragment {
     public void updateStepCount(){
         TextView pedometer_value = (TextView) getView().findViewById(R.id.pedometer_value);
         pedometer_value.setText(String.format("%.0f",(((MainActivity) getActivity()).getStepCount())));
+    }
+    public void updateMeasurements(){    
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        
+        TextView pulse_value = (TextView) getView().findViewById(R.id.pulse_value);
+        int current_pulse = ((MainActivity) getActivity()).getCurrentData().getInt("pulse");
+        pulse_value.setText("" + current_pulse);
+
+        TextView temperature_value = (TextView) getView().findViewById(R.id.temperature_value);
+        double current_temp = ((MainActivity) getActivity()).getCurrentData().getDouble("temperature");
+        temperature_value.setText(String.format("%.2f",current_temp));
+        
+        TextView bloodOx_value = (TextView) getView().findViewById(R.id.bloodOx_value);
+        int current_bloodOx = ((MainActivity) getActivity()).getCurrentData().getInt("bloodox");
+        bloodOx_value.setText("" + current_bloodOx);
+
+        
+        ProgressBar pulse_progress = (ProgressBar) getView().findViewById(R.id.pulse_progress);
+        pulse_progress.setMax(Integer.valueOf(prefs.getString("pref_key_goal_pulse", "70")));
+        pulse_progress.setProgress(current_pulse);
+        
+        ProgressBar bloodOx_progress = (ProgressBar) getView().findViewById(R.id.bloodOx_progress);
+        bloodOx_progress.setMax(Integer.valueOf(prefs.getString("pref_key_goal_bloodox", "100")));
+        bloodOx_progress.setProgress(current_bloodOx);
+        
+        ProgressBar temperature_progress = (ProgressBar) getView().findViewById(R.id.temperature_progress);
+        temperature_progress.setMax(Integer.valueOf(prefs.getString("pref_key_goal_temperature", "37"))*100);
+        temperature_progress.setProgress((int) Math.floor(current_temp*100));
     }
 
     /****LaunchGraph****

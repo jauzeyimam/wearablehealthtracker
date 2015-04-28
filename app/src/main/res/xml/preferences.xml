@@ -7,29 +7,33 @@
         android:defaultValue="true" />
 
     <PreferenceCategory
-        android:title="@string/pref_title_modules"
-        android:key="pref_key_modules_settings"
-        android:summary="@string/pref_summary_module" >
-        <CheckBoxPreference
-            android:key="pref_key_module_pedometer"
-            android:summary="@string/pref_summary_module_pedometer"
-            android:title="@string/pref_title_module_pedometer"
-            android:defaultValue="true" />
-        <CheckBoxPreference
-            android:key="pref_key_module_bloodox"
-            android:summary="@string/pref_summary_module_bloodox"
-            android:title="@string/pref_title_module_bloodox"
-            android:defaultValue="true" />
-        <CheckBoxPreference
-            android:key="pref_key_module_pulse"
-            android:summary="@string/pref_summary_module_pulse"
-            android:title="@string/pref_title_module_pulse"
-            android:defaultValue="true" />
-        <CheckBoxPreference
-            android:key="pref_key_module_temperature"
-            android:summary="@string/pref_summary_module_temperature"
-            android:title="@string/pref_title_module_temperature"
-            android:defaultValue="true" />
+        android:title="@string/pref_title_goals"
+        android:key="pref_key_goals_settings"
+        android:summary="@string/pref_summary_goal" >
+        <EditTextPreference
+            android:key="pref_key_goal_pedometer"
+            android:summary="@string/pref_summary_goal_pedometer"
+            android:title="@string/pref_title_goal_pedometer"
+            android:inputType="number"
+            android:defaultValue="1500" />
+        <EditTextPreference
+            android:key="pref_key_goal_bloodox"
+            android:summary="@string/pref_summary_goal_bloodox"
+            android:title="@string/pref_title_goal_bloodox"
+            android:inputType="number"
+            android:defaultValue="100" />
+        <EditTextPreference
+            android:key="pref_key_goal_pulse"
+            android:summary="@string/pref_summary_goal_pulse"
+            android:title="@string/pref_title_goal_pulse"
+            android:inputType="number"
+            android:defaultValue="70" />
+        <EditTextPreference
+            android:key="pref_key_goal_temperature"
+            android:summary="@string/pref_summary_goal_temperature"
+            android:title="@string/pref_title_goal_temperature"
+            android:inputType="number"
+            android:defaultValue="37" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -61,7 +65,7 @@
     <PreferenceCategory>
         android:title="Other"
         android:key="pref_key_other_settings"
-        android:summary="addition options"
+        android:summary="additional options"
         <Preference
             android:key="pref_key_clear_data"
             android:summary="Clear Data Files from Internal Storage"

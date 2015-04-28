@@ -24,7 +24,7 @@ public enum GraphType {
     },
     TEMPERATURE("Temperature",3,"Temperature","degrees Celsius"){
 	    public Number getValueFromStringArray(String [] values){
-	        return Float.valueOf(values[this.getValueLocation()]);
+	        return Double.valueOf(values[this.getValueLocation()]);
     	}
     };
     

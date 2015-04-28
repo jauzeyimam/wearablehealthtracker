@@ -127,10 +127,10 @@ public class GraphFragment extends Fragment {
         plot.getGraphWidget().getRangeGridLinePaint().setColor(Color.TRANSPARENT);
         plot.getGraphWidget().getRangeSubGridLinePaint().setColor(Color.TRANSPARENT);
         plot.getGraphWidget().setDomainLabelOrientation(0);
-        plot.setUserRangeOrigin(new Integer(0));
+//        plot.setUserRangeOrigin(new Integer(0));
         plot.setDomainValueFormat(new DecimalFormat("0"));
-        plot.setDomainStepValue(1);
-        plot.setTicksPerDomainLabel(5);
+//        plot.setDomainStepValue(1);
+//        plot.setTicksPerDomainLabel(5);
 
         plot.getLayoutManager().remove(plot.getDomainLabelWidget());
         plot.getLayoutManager().remove(plot.getRangeLabelWidget());

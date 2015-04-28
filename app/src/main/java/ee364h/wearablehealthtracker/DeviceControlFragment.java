@@ -216,6 +216,7 @@ public class DeviceControlFragment extends Fragment {
                 Log.d(TAG,"Data Received: " + bundle.getString("values"));
                 displayData(bundle.getString("values"));
                 writeDataToFile(bundle.getString("values"));
+                ((MainActivity) getActivity()).updateCurrentData(bundle);
             }
         }
     };
