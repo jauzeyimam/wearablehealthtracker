@@ -152,46 +152,49 @@ public class HomePageFragment extends Fragment {
         }
     }
     public void updateMeasurements(){    
-        if(this.isRunning) {
+        if(this.isRunning){
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
+            
             TextView pulse_value = (TextView) getView().findViewById(R.id.pulse_value);
             int current_pulse = ((MainActivity) getActivity()).getCurrentData().getInt("pulse");
             pulse_value.setText("" + current_pulse);
 
             TextView temperature_value = (TextView) getView().findViewById(R.id.temperature_value);
             double current_temp = ((MainActivity) getActivity()).getCurrentData().getDouble("temperature");
-            temperature_value.setText(String.format("%.2f", current_temp));
-
+            temperature_value.setText(String.format("%.2f",current_temp));
+            
             TextView bloodOx_value = (TextView) getView().findViewById(R.id.bloodOx_value);
             int current_bloodOx = ((MainActivity) getActivity()).getCurrentData().getInt("bloodox");
             bloodOx_value.setText("" + current_bloodOx);
 
             ProgressBar pulse_progress = (ProgressBar) getView().findViewById(R.id.pulse_progress);
             pulse_progress.setMax(Integer.valueOf(prefs.getString("pref_key_goal_pulse", "70")));
-            if (current_pulse > pulse_progress.getMax()) {
+            if(current_pulse>pulse_progress.getMax()){
                 pulse_progress.setSecondaryProgress(pulse_progress.getMax());
-                pulse_progress.setProgress(current_pulse - pulse_progress.getMax());
-            } else {
+                pulse_progress.setProgress(current_pulse-pulse_progress.getMax());
+            } else{
                 pulse_progress.setProgress(current_pulse);
+                pulse_progress.setSecondaryProgress(0);
             }
 
             ProgressBar bloodOx_progress = (ProgressBar) getView().findViewById(R.id.bloodOx_progress);
             bloodOx_progress.setMax(Integer.valueOf(prefs.getString("pref_key_goal_bloodox", "100")));
-            if (current_bloodOx > bloodOx_progress.getMax()) {
+            if(current_bloodOx>bloodOx_progress.getMax()){
                 bloodOx_progress.setSecondaryProgress(bloodOx_progress.getMax());
-                bloodOx_progress.setProgress(current_bloodOx - bloodOx_progress.getMax());
-            } else {
+                bloodOx_progress.setProgress(current_bloodOx-bloodOx_progress.getMax());
+            } else{
                 bloodOx_progress.setProgress(current_bloodOx);
+                bloodOx_progress.setSecondaryProgress(0);
             }
 
             ProgressBar temperature_progress = (ProgressBar) getView().findViewById(R.id.temperature_progress);
-            temperature_progress.setMax(Integer.valueOf(prefs.getString("pref_key_goal_temperature", "37")) * 100);
-            if (current_temp > temperature_progress.getMax()) {
+            temperature_progress.setMax(Integer.valueOf(prefs.getString("pref_key_goal_temperature", "37"))*100);
+            if(current_temp>temperature_progress.getMax()){
                 temperature_progress.setSecondaryProgress(temperature_progress.getMax());
-                temperature_progress.setProgress(((int) Math.floor(current_temp * 100)) - temperature_progress.getMax());
-            } else {
-                temperature_progress.setProgress(((int) Math.floor(current_temp * 100)));
+                temperature_progress.setProgress(((int) Math.floor(current_temp*100))-temperature_progress.getMax());
+            } else{
+                temperature_progress.setProgress(((int) Math.floor(current_temp*100)));
+                temperature_progress.setSecondaryProgress(0);
             }
         }
     }

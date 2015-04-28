@@ -318,6 +318,7 @@ public class DeviceControlFragment extends Fragment {
             try {
               outputStream = getActivity().openFileOutput(filename, Context.MODE_APPEND);
               outputStream.write(data.getBytes());
+              outputStream.write("\n".getBytes());
               outputStream.close();
             } catch (Exception e) {
               e.printStackTrace();

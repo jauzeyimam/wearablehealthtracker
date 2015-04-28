@@ -30,9 +30,11 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
@@ -69,13 +71,27 @@ public class MainActivity extends Activity
 
             sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
+            String filePath = getFilesDir() + "/" + DATA_FILENAME;
+            File mFile = new File( filePath );
             currentData = new Bundle();
-            currentData.putLong("time", 0);
-            currentData.putInt("pulse", 0);
-            currentData.putInt("bloodox",0);
-            currentData.putDouble("temperature",0);
-            currentData.putInt("battery",0);
-            currentData.putString("values","");
+            if(mFile.exists())
+            {
+                String lastLine = tail(mFile);
+                String[] values = lastLine.split(" ");
+                currentData.putLong("time", (long) Long.valueOf(values[0]));
+                currentData.putInt("pulse", (int) GraphType.PULSE.getValueFromStringArray(values));
+                currentData.putInt("bloodox",(int) GraphType.BLOODOX.getValueFromStringArray(values));
+                currentData.putDouble("temperature",(double) GraphType.TEMPERATURE.getValueFromStringArray(values));
+                currentData.putInt("battery",(int) Integer.valueOf(values[4]));
+                currentData.putString("values",lastLine);
+            } else{
+                currentData.putLong("time", 0);
+                currentData.putInt("pulse", 0);
+                currentData.putInt("bloodox",0);
+                currentData.putDouble("temperature",0);
+                currentData.putInt("battery",0);
+                currentData.putString("values","");
+            }
 
             stepCount = 0;
             connectionStatus = false;
@@ -171,7 +187,7 @@ public class MainActivity extends Activity
     };
 
     public void onBluetoothSelected(){
-        Log.d(TAG,"BLUETOOTH SELECTED");
+        Log.d(TAG, "BLUETOOTH SELECTED");
         // New SettingsFragment
         DeviceScanFragment bluetoothFragment = new DeviceScanFragment();
 
@@ -186,7 +202,7 @@ public class MainActivity extends Activity
     };
 
     public void onBLEDeviceSelected(String name, String address){
-        Log.d(TAG,"DEVICE SELECTED");
+        Log.d(TAG, "DEVICE SELECTED");
         // New SettingsFragment
         DeviceControlFragment deviceControlFragment = new DeviceControlFragment();
         Bundle args = new Bundle();
@@ -251,6 +267,51 @@ public class MainActivity extends Activity
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+    public String tail( File file ) {
+        RandomAccessFile fileHandler = null;
+        try {
+            fileHandler = new RandomAccessFile( file, "r" );
+            long fileLength = fileHandler.length() - 1;
+            StringBuilder sb = new StringBuilder();
+
+            for(long filePointer = fileLength; filePointer != -1; filePointer--){
+                fileHandler.seek( filePointer );
+                int readByte = fileHandler.readByte();
+
+                if( readByte == 0xA ) {
+                    if( filePointer == fileLength ) {
+                        continue;
+                    }
+                    break;
+
+                } else if( readByte == 0xD ) {
+                    if( filePointer == fileLength - 1 ) {
+                        continue;
+                    }
+                    break;
+                }
+
+                sb.append( ( char ) readByte );
+            }
+
+            String lastLine = sb.reverse().toString();
+            return lastLine;
+        } catch( java.io.FileNotFoundException e ) {
+            e.printStackTrace();
+            return null;
+        } catch( java.io.IOException e ) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (fileHandler != null )
+                try {
+                    fileHandler.close();
+                } catch (IOException e) {
+                    /* ignore */
+                }
+        }
     }
 
     /*Bluetooth Device Simple*/
