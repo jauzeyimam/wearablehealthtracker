@@ -136,8 +136,10 @@ public class HomePageFragment extends Fragment {
     }
 
     public void updateStepCount(){
-        TextView pedometer_value = (TextView) getView().findViewById(R.id.pedometer_value);
-        pedometer_value.setText(String.format("%.0f",(((MainActivity) getActivity()).getStepCount())));
+        if (this.isVisible()) {
+            TextView pedometer_value = (TextView) getView().findViewById(R.id.pedometer_value);
+            pedometer_value.setText(String.format("%.0f", (((MainActivity) getActivity()).getStepCount())));
+        }
     }
     public void updateMeasurements(){    
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());

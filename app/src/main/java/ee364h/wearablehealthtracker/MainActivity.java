@@ -184,6 +184,7 @@ public class MainActivity extends Activity
 
     @Override
     public void onResume(){
+        super.onResume();
         /*try{
             openDeviceConnection(mDevice);
         }catch(IOException e) {
