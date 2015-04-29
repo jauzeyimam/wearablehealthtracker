@@ -13,8 +13,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.androidplot.Plot;
+import com.androidplot.ui.AnchorPosition;
 import com.androidplot.ui.SizeLayoutType;
 import com.androidplot.ui.SizeMetrics;
+import com.androidplot.ui.TextOrientationType;
+import com.androidplot.ui.XLayoutStyle;
+import com.androidplot.ui.YLayoutStyle;
 import com.androidplot.xy.*;
 
 import java.io.BufferedReader;
@@ -22,8 +26,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
+import java.text.FieldPosition;
+import java.text.Format;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 
@@ -106,12 +115,51 @@ public class GraphFragment extends Fragment {
                 0, SizeLayoutType.FILL));
 
         /*Background*/
+//        plot.getLayoutManager().setMarkupEnabled(true);
         plot.setBackgroundColor(Color.WHITE);
         plot.getGraphWidget().getBackgroundPaint().setColor(Color.WHITE);
         plot.getGraphWidget().getGridBackgroundPaint().setColor(Color.WHITE);
+        plot.getGraphWidget().setMargins(75, 50, 20,75);
+        plot.getLayoutManager().moveToBottom(plot.getGraphWidget());
+
+        /*Legend*/
+        plot.getLegendWidget().position(0, XLayoutStyle.ABSOLUTE_FROM_RIGHT,250 ,YLayoutStyle.ABSOLUTE_FROM_BOTTOM,AnchorPosition.RIGHT_BOTTOM);
+        plot.getLegendWidget().setSize(new SizeMetrics(75,SizeLayoutType.ABSOLUTE,350,SizeLayoutType.ABSOLUTE));
+        plot.getLegendWidget().getTextPaint().setTextSize(45);
+        plot.getLegendWidget().setIconSizeMetrics(new SizeMetrics(50,SizeLayoutType.ABSOLUTE,50,SizeLayoutType.ABSOLUTE));
+
+        /*Title*/
+        plot.getLayoutManager().add(plot.getTitleWidget());
+        plot.getLayoutManager().moveToTop(plot.getTitleWidget());
+        plot.getTitleWidget().position(0, XLayoutStyle.ABSOLUTE_FROM_CENTER, 0, YLayoutStyle.ABSOLUTE_FROM_TOP, AnchorPosition.TOP_MIDDLE);
+        plot.getTitleWidget().setText(thisGraphType.getName());
+        plot.getTitleWidget().getLabelPaint().setTextSize(90);
+        plot.getTitleWidget().setSize(new SizeMetrics(150, SizeLayoutType.ABSOLUTE, 750, SizeLayoutType.ABSOLUTE));
+        plot.getTitleWidget().getLabelPaint().setColor(Color.GRAY);
+        plot.getTitleWidget().getLabelPaint().setFakeBoldText(true);
+
+        /*X Axis Title*/
+        plot.getLayoutManager().add(plot.getDomainLabelWidget());
+        plot.getLayoutManager().moveToTop(plot.getDomainLabelWidget());
+        plot.getDomainLabelWidget().position(0, XLayoutStyle.ABSOLUTE_FROM_CENTER, 0, YLayoutStyle.ABSOLUTE_FROM_BOTTOM, AnchorPosition.BOTTOM_MIDDLE);
+        plot.getDomainLabelWidget().setText("Time of Day");
+        plot.getDomainLabelWidget().getLabelPaint().setTextSize(45);
+        plot.getDomainLabelWidget().setSize(new SizeMetrics(65, SizeLayoutType.ABSOLUTE, 350, SizeLayoutType.ABSOLUTE));
+        plot.getDomainLabelWidget().getLabelPaint().setColor(Color.GRAY);
+
+        /*Y Axis Title*/
+        plot.getLayoutManager().add(plot.getRangeLabelWidget());
+        plot.getLayoutManager().moveToTop(plot.getRangeLabelWidget());
+        plot.getRangeLabelWidget().position(0, XLayoutStyle.RELATIVE_TO_LEFT, 0, YLayoutStyle.ABSOLUTE_FROM_CENTER, AnchorPosition.LEFT_MIDDLE);
+        plot.getRangeLabelWidget().setText(thisGraphType.getUnits());
+        plot.getRangeLabelWidget().setOrientation(TextOrientationType.VERTICAL_ASCENDING);
+        plot.getRangeLabelWidget().getLabelPaint().setTextSize(45);
+        plot.getRangeLabelWidget().setSize(new SizeMetrics(500,SizeLayoutType.ABSOLUTE,75,SizeLayoutType.ABSOLUTE));
+        plot.getRangeLabelWidget().getLabelPaint().setColor(Color.GRAY);
 
         /*Y Axis*/
         plot.getGraphWidget().getDomainLabelPaint().setColor(Color.GRAY);
+        plot.getGraphWidget().getDomainLabelPaint().setTextSize((float) 24.0);
         plot.getGraphWidget().getDomainOriginLinePaint().setColor(Color.GRAY);
         plot.getGraphWidget().getDomainGridLinePaint().setColor(Color.TRANSPARENT);
         plot.getGraphWidget().getDomainSubGridLinePaint().setColor(Color.TRANSPARENT);
@@ -121,21 +169,46 @@ public class GraphFragment extends Fragment {
         // plot.setRangeStepValue(10);
         plot.setTicksPerRangeLabel(1);
 
+
         /*X Axis*/
         plot.getGraphWidget().getRangeLabelPaint().setColor(Color.GRAY);
+        plot.getGraphWidget().getRangeLabelPaint().setTextSize((float) 24.0);
         plot.getGraphWidget().getRangeOriginLinePaint().setColor(Color.GRAY);
         plot.getGraphWidget().getRangeGridLinePaint().setColor(Color.TRANSPARENT);
         plot.getGraphWidget().getRangeSubGridLinePaint().setColor(Color.TRANSPARENT);
         plot.getGraphWidget().setDomainLabelOrientation(0);
-//        plot.setUserRangeOrigin(new Integer(0));
-        plot.setDomainValueFormat(new DecimalFormat("0"));
+
+
+        plot.setDomainValueFormat(new Format() {
+
+            // create a simple date format that draws on the year portion of our timestamp.
+            // see http://download.oracle.com/javase/1.4.2/docs/api/java/text/SimpleDateFormat.html
+            // for a full description of SimpleDateFormat.
+            private SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+
+            @Override
+            public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
+
+                // because our timestamps are in seconds and SimpleDateFormat expects milliseconds
+                // we multiply our timestamp by 1000:
+                long timestamp = ((Number) obj).longValue();
+                Date date = new Date(timestamp);
+                return dateFormat.format(date, toAppendTo, pos);
+            }
+
+            @Override
+            public Object parseObject(String source, ParsePosition pos) {
+                return null;
+
+            }
+        });
 //        plot.setDomainStepValue(1);
 //        plot.setTicksPerDomainLabel(5);
 
-        plot.getLayoutManager().remove(plot.getDomainLabelWidget());
-        plot.getLayoutManager().remove(plot.getRangeLabelWidget());
-        plot.getLayoutManager().remove(plot.getLegendWidget());
-        plot.getLayoutManager().remove(plot.getTitleWidget());
+        // plot.getLayoutManager().remove(plot.getDomainLabelWidget());
+        // plot.getLayoutManager().remove(plot.getRangeLabelWidget());
+        // plot.getLayoutManager().remove(plot.getLegendWidget());
+        // plot.getLayoutManager().remove(plot.getTitleWidget());
 
 
         // // Create a couple arrays of y-values to plot:
@@ -145,9 +218,9 @@ public class GraphFragment extends Fragment {
         // Turn the above arrays into XYSeries':
         XYSeries series1 = new SimpleXYSeries(
                 // Arrays.asList(testData1),          // SimpleXYSeries takes a List so turn our array into a List
+                times, // Y_VALS_ONLY means use the element index as the x value
                 series1Numbers,          // SimpleXYSeries takes a List so turn our array into a List
-                SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, // Y_VALS_ONLY means use the element index as the x value
-                "Series1");                             // Set the display title of the series
+                thisGraphType.getTitle());                             // Set the display title of the series
 
         // same as above
         // XYSeries series2 = new SimpleXYSeries(series2Numbers, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series2");
@@ -168,8 +241,6 @@ public class GraphFragment extends Fragment {
         // series2Format.configure(getActivity().getApplicationContext(),
         //         R.xml.line_point_formatter_with_plf2);
         // plot.addSeries(series2, series2Format);
-
-
     }
 
     @Override

@@ -7,22 +7,22 @@ package ee364h.wearablehealthtracker;
  */
 public enum GraphType {
 
-    PEDOMETER("Pedometer", 1, "Steps", "steps") {
+    PEDOMETER("Pedometer", 1, "Steps", "Steps") {
         public Number getValueFromStringArray (String[]values){
             return Integer.valueOf(values[this.getValueLocation()]);
         }
     },
-    PULSE("Pulse",1,"Heart Rate", "bpm"){
+    PULSE("Pulse",1,"Heart Rate", "BPM"){
     	public Number getValueFromStringArray(String [] values){
         	return Integer.valueOf(values[this.getValueLocation()]);
     	}
     },
-    BLOODOX("BloodOx",2,"Oxygen Saturation","%"){
+    BLOODOX("BloodOx",2,"Saturation","%"){
 	    public Number getValueFromStringArray(String [] values){
 	        return Integer.valueOf(values[this.getValueLocation()]);
     	}
     },
-    TEMPERATURE("Temperature",3,"Temperature","degrees Celsius"){
+    TEMPERATURE("Temperature",3,"Temperature","Degrees Celsius"){
 	    public Number getValueFromStringArray(String [] values){
 	        return Double.valueOf(values[this.getValueLocation()]);
     	}
