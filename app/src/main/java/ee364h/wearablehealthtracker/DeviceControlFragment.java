@@ -25,6 +25,7 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -44,15 +45,15 @@ public class DeviceControlFragment extends Fragment {
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     private final static String TAG = DeviceControlFragment.class.getSimpleName();
 
-    private TextView mConnectionState;
-    private TextView mDataField;
+    // private TextView mConnectionState;
+    // private TextView mDataField;
     private String mDeviceName;
     private static final String UUID_SERIAL_PORT_PROFILE 
                            = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
     private static final String HEADSET_MAC_ADDRESS = "FC:C5:72:23:A7:D8";
     private static final String HEADSET_NAME = "UART";
     private String mDeviceAddress;
-    private ExpandableListView mGattServicesList;
+    // private ExpandableListView mGattServicesList;
     private BluetoothLEService mBluetoothLEService;
     private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
             new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
@@ -91,10 +92,11 @@ public class DeviceControlFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        setRetainInstance(true);
+        // setHasOptionsMenu(true);
     }
 
-    @Override
+    /*@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // create ContextThemeWrapper from the original Activity Context with the custom theme
@@ -105,7 +107,7 @@ public class DeviceControlFragment extends Fragment {
 
         // inflate the layout using the cloned inflater, not default inflater
         return inflater.inflate(R.layout.gatt_services_characteristics, container, false);
-    }
+    }*/
 
     @Override
     public void onStart(){
@@ -116,7 +118,7 @@ public class DeviceControlFragment extends Fragment {
             mDeviceAddress = getArguments().getString(EXTRAS_DEVICE_ADDRESS);
         }
 
-        // Sets up UI references.
+/*        // Sets up UI references.
         ((TextView) getView().findViewById(R.id.device_address)).setText(HEADSET_MAC_ADDRESS);
         mGattServicesList = (ExpandableListView) getView().findViewById(R.id.gatt_services_list_expandable);
         mGattServicesList.setOnChildClickListener(servicesListClickListner);
@@ -129,7 +131,7 @@ public class DeviceControlFragment extends Fragment {
         linearLayout = (LinearLayout) getView().findViewById(R.id.connection_state_linear_layout);
         linearLayout.setVisibility(View.VISIBLE);
         linearLayout = (LinearLayout) getView().findViewById(R.id.data_value_linear_layout);
-        linearLayout.setVisibility(View.VISIBLE);;
+        linearLayout.setVisibility(View.VISIBLE);;*/
 
         Intent gattServiceIntent = new Intent(getActivity(), BluetoothLEService.class);
         getActivity().bindService(gattServiceIntent, mServiceConnection, getActivity().BIND_AUTO_CREATE);
@@ -146,6 +148,10 @@ public class DeviceControlFragment extends Fragment {
         if (mBluetoothLEService != null) {
             final boolean result = mBluetoothLEService.connect(HEADSET_MAC_ADDRESS);
             Log.d(TAG, "Connect request result=" + result);
+            if(!result){
+                Toast.makeText(getActivity(), "Failed to Connect to UART", Toast.LENGTH_SHORT).show();
+                ((MainActivity) getActivity()).toggleBluetoothFragment();
+            }
         }
     }
 
@@ -153,6 +159,8 @@ public class DeviceControlFragment extends Fragment {
     public void onPause() {
         super.onPause();
         getActivity().unregisterReceiver(mGattUpdateReceiver);
+        ((MainActivity)getActivity()).updateBluetoothConnectionStatus(false);
+        Log.d(TAG,"DeviceControlFragment Paused");
     }
 
     @Override
@@ -160,11 +168,13 @@ public class DeviceControlFragment extends Fragment {
         super.onDestroy();
         getActivity().unbindService(mServiceConnection);
         mBluetoothLEService = null;
+        Log.d(TAG,"DeviceControlFragment Destroyed");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        Log.d(TAG,"DeviceControlFragment Detached");
     }
 
     // Code to manage Service lifecycle.
@@ -178,7 +188,11 @@ public class DeviceControlFragment extends Fragment {
                 getActivity().finish();
             }
             // Automatically connects to the device upon successful start-up initialization.
-            mBluetoothLEService.connect(HEADSET_MAC_ADDRESS);
+            boolean result = mBluetoothLEService.connect(HEADSET_MAC_ADDRESS);
+            if(!result){
+                Toast.makeText(getActivity(), "Failed to Connect to UART", Toast.LENGTH_SHORT).show();
+                ((MainActivity) getActivity()).toggleBluetoothFragment();
+            }
         }
 
         @Override
@@ -199,24 +213,26 @@ public class DeviceControlFragment extends Fragment {
             final String action = intent.getAction();
             if (BluetoothLEService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
-                updateConnectionState(R.string.connected);
-                getActivity().invalidateOptionsMenu();
+                // updateConnectionState(R.string.connected);
+                // getActivity().invalidateOptionsMenu();
                 ((MainActivity)getActivity()).updateBluetoothConnectionStatus(true);
 
             } else if (BluetoothLEService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
-                updateConnectionState(R.string.disconnected);
-                getActivity().invalidateOptionsMenu();
+                // updateConnectionState(R.string.disconnected);
+                // getActivity().invalidateOptionsMenu();
                 ((MainActivity)getActivity()).updateBluetoothConnectionStatus(false);
-                clearUI();
+                // clearUI();
+                Toast.makeText(getActivity(), "Disconnected from UART", Toast.LENGTH_SHORT).show();
+                ((MainActivity) getActivity()).toggleBluetoothFragment();
             } else if (BluetoothLEService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
-                displayGattServices(mBluetoothLEService.getSupportedGattServices());
+                // displayGattServices(mBluetoothLEService.getSupportedGattServices());
                 mBluetoothLEService.enableTXNotification();
             } else if (BluetoothLEService.ACTION_DATA_AVAILABLE.equals(action)) {
                 Bundle bundle = intent.getBundleExtra(BluetoothLEService.EXTRA_DATA);
                 Log.d(TAG,"Data Received: " + bundle.getString("values"));
-                displayData(bundle.getString("values"));
+                // displayData(bundle.getString("values"));
                 writeDataToFile(bundle.getString("values"));
                 ((MainActivity) getActivity()).updateCurrentData(bundle);
             }
@@ -227,7 +243,7 @@ public class DeviceControlFragment extends Fragment {
     // demonstrates 'Read' and 'Notify' features.  See
     // http://d.android.com/reference/android/bluetooth/BluetoothGatt.html for the complete
     // list of supported characteristic features.
-    private final ExpandableListView.OnChildClickListener servicesListClickListner =
+    /*private final ExpandableListView.OnChildClickListener servicesListClickListner =
             new ExpandableListView.OnChildClickListener() {
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
@@ -255,15 +271,15 @@ public class DeviceControlFragment extends Fragment {
                     }
                     return false;
                 }
-            };
+            };*/
 
-    private void clearUI() {
-        mGattServicesList.setAdapter((SimpleExpandableListAdapter) null);
-        mDataField.setText(R.string.no_data);
-    }
+    // private void clearUI() {
+    //     mGattServicesList.setAdapter((SimpleExpandableListAdapter) null);
+    //     mDataField.setText(R.string.no_data);
+    // }
 
 
-    @Override
+/*    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.gatt_services, menu);
@@ -278,9 +294,9 @@ public class DeviceControlFragment extends Fragment {
             menu.findItem(R.id.menu_disconnect).setVisible(false);
         }
 //        return ;
-    }
+    }*/
 
-    @Override
+/*    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.menu_connect:
@@ -294,23 +310,23 @@ public class DeviceControlFragment extends Fragment {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
-    private void updateConnectionState(final int resourceId) {
+/*    private void updateConnectionState(final int resourceId) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 mConnectionState.setText(resourceId);
             }
         });
-    }
+    }*/
 
-    private void displayData(String data) {
+/*    private void displayData(String data) {
         if (data != null) {
             mDataField.setText(data);
         }
     }
-
+*/
     private void writeDataToFile(String data){
         if(data != null){
             String filename = ((MainActivity) getActivity()).getDataFilename();
@@ -330,7 +346,7 @@ public class DeviceControlFragment extends Fragment {
     // Demonstrates how to iterate through the supported GATT Services/Characteristics.
     // In this sample, we populate the data structure that is bound to the ExpandableListView
     // on the UI.
-    private void displayGattServices(List<BluetoothGattService> gattServices) {
+/*    private void displayGattServices(List<BluetoothGattService> gattServices) {
         if (gattServices == null) return;
         String uuid = null;
         String unknownServiceString = getResources().getString(R.string.unknown_service);
@@ -382,7 +398,7 @@ public class DeviceControlFragment extends Fragment {
                 new int[] { android.R.id.text1, android.R.id.text2 }
         );
         mGattServicesList.setAdapter(gattServiceAdapter);
-    }
+    }*/
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
@@ -392,5 +408,5 @@ public class DeviceControlFragment extends Fragment {
         intentFilter.addAction(BluetoothLEService.ACTION_DATA_AVAILABLE);
         return intentFilter;
     }
-
+    
 }

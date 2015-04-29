@@ -44,13 +44,14 @@ public class MainActivity extends Activity
         implements GraphFragment.OnFragmentInteractionListener,
         HomePageFragment.OnGraphSelectedListener,
         HomePageFragment.OnSettingsSelectedListener, HomePageFragment.OnBluetoothSelectedListener, 
-        DeviceScanFragment.OnBLEDeviceSelectedListener, SensorEventListener {
+        SensorEventListener {
 
     private final static String HOME_FRAGMENT_TAG = "HomePageFragment";
     private final static String GRAPH_FRAGMENT_TAG = "GraphFragment";
     private final static String BLUETOOTH_FRAGMENT_TAG = "DeviceScanFragment";
     private final static String BLUETOOTH_DEVICE_FRAGMENT_TAG = "DeviceControlFragment";
     private final static String SETTINGS_FRAGMENT_TAG = "SettingsFragment";
+    private static final int REQUEST_ENABLE_BT = 1;
 
     private final static String TAG = MainActivity.class.getSimpleName();
     
@@ -60,6 +61,7 @@ public class MainActivity extends Activity
     private boolean connectionStatus;
     private SensorManager sensorManager;
     static PackageManager packageManager;
+    private int pedometerToastCount;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,7 @@ public class MainActivity extends Activity
             }
 
             stepCount = 0;
+            pedometerToastCount = 0;
             connectionStatus = false;
 
             HomePageFragment home = new HomePageFragment();
@@ -130,8 +133,9 @@ public class MainActivity extends Activity
         if(countSensor != null){
             sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
-        else{
-            Toast.makeText(this, "Count sensor not available.", Toast.LENGTH_LONG).show();
+        else if(pedometerToastCount == 0){
+            Toast.makeText(this, "Pedometer not available.", Toast.LENGTH_LONG).show();
+            pedometerToastCount++;
         }
     }
 
@@ -190,20 +194,80 @@ public class MainActivity extends Activity
 
     public void onBluetoothSelected(){
         Log.d(TAG, "BLUETOOTH SELECTED");
-        // New SettingsFragment
-        DeviceScanFragment bluetoothFragment = new DeviceScanFragment();
 
-        //Replace HomePageFragment with GraphFragment
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, bluetoothFragment, BLUETOOTH_FRAGMENT_TAG);
-        transaction.addToBackStack(null);
+        BluetoothAdapter mBluetoothAdapter;
+        // Use this check to determine whether BLE is supported on the device.  Then you can
+        // selectively disable BLE-related features.
+        if (!this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+            Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
+        }else{
+            // Initializes a Bluetooth adapter.  For API level 18 and above, get a reference to
+            // BluetoothAdapter through BluetoothManager.
+            final BluetoothManager bluetoothManager =
+                    (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+            mBluetoothAdapter = bluetoothManager.getAdapter();
 
-        // Commit the transaction
-        transaction.commit();
-        Log.d(TAG,"SCANNING FRAGMENT INITIATED");
+            // Checks if Bluetooth is supported on the device.
+            if (mBluetoothAdapter == null) {
+                Toast.makeText(this, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Ensures Bluetooth is enabled on the device.  If Bluetooth is not currently enabled,
+            // fire an intent to display a dialog asking the user to grant permission to enable it.
+            if (!mBluetoothAdapter.isEnabled()) {
+                if (!mBluetoothAdapter.isEnabled()) {
+                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+                }
+            }
+            
+            toggleBluetoothFragment();
+        }
+
+
     };
 
-    public void onBLEDeviceSelected(String name, String address){
+    /*@Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // User chose not to enable Bluetooth.
+        if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }*/
+
+    public void toggleBluetoothFragment(){
+
+        boolean bluetoothFragmentExists = getFragmentManager().findFragmentByTag(BLUETOOTH_FRAGMENT_TAG) != null;
+
+        if(!bluetoothFragmentExists){
+
+            DeviceControlFragment bluetoothFragment = new DeviceControlFragment();
+
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.add(bluetoothFragment, BLUETOOTH_FRAGMENT_TAG);
+
+
+            // Commit the transaction
+            transaction.commit();
+            Toast.makeText(this, "Attempting to connect to UART", Toast.LENGTH_SHORT).show();
+            Log.d(TAG,"BLUETOOTH FRAGMENT INITIATED");
+        } else{
+            Toast.makeText(this, "Disconnected from UART", Toast.LENGTH_SHORT).show();
+
+            DeviceControlFragment bluetoothFragment = (DeviceControlFragment) getFragmentManager().findFragmentByTag(BLUETOOTH_FRAGMENT_TAG);
+
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.remove(bluetoothFragment);
+
+            // Commit the transaction
+            transaction.commit();
+            Log.d(TAG,"BLUETOOTH FRAGMENT REMOVED");
+        }
+    }
+    
+/*    public void onBLEDeviceSelected(String name, String address){
         Log.d(TAG, "DEVICE SELECTED");
         // New SettingsFragment
         DeviceControlFragment deviceControlFragment = new DeviceControlFragment();
@@ -214,13 +278,13 @@ public class MainActivity extends Activity
 
         //Replace HomePageFragment with GraphFragment
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, deviceControlFragment, BLUETOOTH_DEVICE_FRAGMENT_TAG);
+        transaction.add(R.id.container, deviceControlFragment, BLUETOOTH_DEVICE_FRAGMENT_TAG);
         transaction.addToBackStack(null);
 
         // Commit the transaction
         transaction.commit();
         Log.d(TAG,"CONTROL FRAGMENT INITIATED");
-    };
+    };*/
 
 
     @Override

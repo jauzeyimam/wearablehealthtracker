@@ -50,7 +50,6 @@ public class HomePageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isRunning = true;
     }
 
     @Override
@@ -62,6 +61,8 @@ public class HomePageFragment extends Fragment {
         // clone the inflater using the ContextThemeWrapper
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
 
+        isRunning = true;
+
         // inflate the layout using the cloned inflater, not default inflater
         return localInflater.inflate(R.layout.home_page_layout, container, false);
     }
@@ -69,7 +70,6 @@ public class HomePageFragment extends Fragment {
     public void onStart(){
         super.onStart();
         getActivity().getActionBar().hide();
-        isRunning = true;
         updateStepCount();
         updateMeasurements();
         updateBluetoothButton();
@@ -203,7 +203,7 @@ public class HomePageFragment extends Fragment {
 
             ProgressBar temperature_progress = (ProgressBar) getView().findViewById(R.id.temperature_progress);
             temperature_progress.setMax(Integer.valueOf(prefs.getString("pref_key_goal_temperature", "37"))*100);
-            if(current_temp>temperature_progress.getMax()){
+            if(current_temp*100>temperature_progress.getMax()){
                 temperature_progress.setSecondaryProgress(temperature_progress.getMax());
                 temperature_progress.setProgress(((int) Math.floor(current_temp*100))-temperature_progress.getMax());
             } else{

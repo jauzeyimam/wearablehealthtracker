@@ -137,8 +137,8 @@ public class BluetoothLEService extends Service {
                 // ByteBuffer bb = ByteBuffer.wrap(characteristic.getValue());
                 // String value = new String(characteristic.getValue());
                 long time = date.getTime();
-                int pulse = characteristic.getValue()[0];
-                int bloodox = characteristic.getValue()[1];
+                int pulse = characteristic.getValue()[0] + 25;
+                int bloodox = characteristic.getValue()[1] + 4;
                 double temperature = ((characteristic.getValue()[3] & 0xff) << 8) | (characteristic.getValue()[2] & 0xff);
                 temperature = (temperature*0.02)-273.15;
                 int battery = ((characteristic.getValue()[4] & 0xff) << 8) | (characteristic.getValue()[5] & 0xff);
